@@ -19,10 +19,26 @@
                 session_start();
                 $_SESSION["user"] = [
                     "firstName" => (string)$user->firstName,
-                    "email"     => $email
+                    "email"     => $email,
+                    // To recognize an admin
+                    "isAdmin"   => ((string)$user->admin === "1")
                 ];
 
-                echo json_encode(["success" => true, "message" => "Logged in successfully!"]);
+                // Check if admin
+                if ($_SESSION["user"]["isAdmin"]) {
+                    echo json_encode([
+                        "success" => true,
+                        "message" => "Admin logged in successfully!",
+                        "isAdmin" => true
+                    ]);
+
+                } else {
+                    echo json_encode([
+                        "success" => true,
+                        "message" => "Logged in successfully!",
+                        "isAdmin" => false
+                    ]);
+                }
                 exit;
             }
         }

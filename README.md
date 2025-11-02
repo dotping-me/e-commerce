@@ -29,22 +29,20 @@ The website includes basic e-commerce features such as:
 
 ```text
 e-commerce/
-├───index.php # Router
 │
 ├───backend/
 │   ├───api/  # Holds function handers
 │   └───data/ # Holds data files
 │
-└───frontend/
-│   ├───assets/
-│   │   ├───icons/
-│   │   └───images/
+├───frontend/
+│   ├───pages/ # Holds all pages
 │   │
-│   ├───css/ # Holds CSS files
+├───public/
+│   ├───assets/       # Holds icons, images, video
+│   ├───css/          # Holds CSS files
 │   │   └───input.css 
-│   │
-│   │
-│   └───index.php # main
+│   ├───js/           # Holds Javascript functions
+│   └───index.php     # Router file
 ```
 
 ## 🔌 Tech Stack

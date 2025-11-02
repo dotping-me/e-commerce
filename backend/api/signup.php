@@ -37,7 +37,9 @@
     $newUser->addChild("email", $email);
     $newUser->addChild("phone", $phone);
     $newUser->addChild("password", $password);
-
+    // Default not admin
+    $newUser->addChild("admin", 0); 
+    
     // Saves the xml file
     $xml -> asXML($xmlFile);
 

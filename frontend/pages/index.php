@@ -16,12 +16,10 @@ session_start();
     <?php include("components/header.php"); ?>
 
     <!-- Hero Section -->
-    <section id="hero" class="relative h-96 flex flex-col items-center justify-center bg-cover bg-center text-center">
-        <img src="/assets/images/bghero.avif" class="absolute top-0 left-0 -z-100 w-full">
-
+    <section id="hero" class="relative h-96 flex flex-col items-center justify-center text-center bg-cover bg-center" style="background-image: url('/assets/images/bghero.avif');">
         <div class="relative mt-20">
-            <h2 id="hero-subtitle" class="text-3xl text-white font-bold mt-7 mr-20 opacity-0"></h2>
-            <h1 id="hero-title" class="text-8xl font-extrabold text-white opacity-0 absolute left-1/2 -translate-x-1/2 -top-10 tracking-wide mix-blend-overlay"></h1>
+            <h2 id="hero-subtitle" class="text-4xl text-white font-bold mt-13 opacity-0"></h2>
+            <h1 id="hero-title" class="text-9xl font-extrabold text-shadow-lg/20 text-white opacity-0 absolute left-1/2 -translate-x-1/2 -top-10 tracking-wide mix-blend-overlay"></h1>
         </div>
 
         <p id="hero-desc" class="max-w-lg text-gray-100 text-base mt-12 opacity-0 transition-opacity duration-700">
@@ -30,18 +28,22 @@ session_start();
     </section>
 
     <!-- Section Divider -->
-    <img class="absolute opacity-40" src="/frontend/assets/icons/divider.svg">
-    <h1 id="feat-product" class="text-5xl font-bold mx-7 my-14 opacity-0 transition-opacity duration-700">Featured Products.</h1>
+    <img class="absolute opacity-40" src="/assets/icons/divider.svg">
+    <h1 id="feat-product" class="text-5xl font-bold mx-7 my-14 mb-0 opacity-0 transition-opacity duration-700">Featured Products.</h1>
 
     <!-- Featured Section -->
-    <section id="catalog" class="overflow-x-hidden">
-        <!-- <button id="prev" class="carousel-nav-btn"><img class="w-30 h-30" src="/frontend/assets/icons/left.svg"></button> -->
+    <section id="catalog" class="flex scale-x-80 scale-y-80 mt-0 overflow-x-hidden">
+        <button id="prev" class="carousel-nav-btn">
+            <img class="w-30 h-30" src="/assets/icons/left.svg">
+        </button>
         
         <div id="carousel" class="flex overflow-x-hidden snap-x snap-mandatory scroll-smooth space-x-6">
             <div id="products-display-here" class="slider-container overflow-x-hidden px-8"></div>
         </div>
 
-        <!-- <button id="next" class="carousel-nav-btn"><img class="w-30 h-30" src="/frontend/assets/icons/right.svg"></button> -->
+        <button id="next" class="carousel-nav-btn">
+            <img class="w-30 h-30" src="/assets/icons/right.svg">
+        </button>
     </section>
 
     <!-- Just for testing

@@ -1,4 +1,4 @@
-<footer class="bg-gray-700 text-gray-200 py-12 rounded-t-2xl shadow-2xl">
+<footer class="bg-gray-700 text-gray-200 pt-4 rounded-t-2xl shadow-2xl">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
 
         <!-- Shop Info -->
