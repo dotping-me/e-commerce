@@ -9,6 +9,8 @@ session_start();
     
     <title>Product Page</title>
 
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo.svg">
+
     <link rel="stylesheet" href="/css/output.css">
 </head>
 

@@ -8,11 +8,15 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - Cart</title>
 
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo.svg">
+
     <!-- Tailwind CLI -->
     <link href="/css/output.css" rel="stylesheet">
 </head>
 
 <body>
+
+    <!-- Navigation Bar -->
     <?php include("components/header.php"); ?>
 
     <!-- Title text -->
@@ -51,6 +55,7 @@ session_start();
         </div>
     </section>
 
+    <!-- Footer -->
     <?php include("components/footer.php"); ?>
 
     <script src="/js/cart.js"></script>

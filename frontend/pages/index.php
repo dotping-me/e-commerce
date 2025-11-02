@@ -9,10 +9,14 @@ session_start();
 
     <title>Shop - Home</title>
 
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo.svg">
+
     <link href="/css/output.css" rel="stylesheet">
 </head>
 
 <body>
+
+    <!-- Navigation Bar -->
     <?php include("components/header.php"); ?>
 
     <!-- Hero Section -->
@@ -29,21 +33,26 @@ session_start();
 
     <!-- Section Divider -->
     <img class="absolute opacity-40" src="/assets/icons/divider.svg">
-    <h1 id="feat-product" class="text-5xl font-bold mx-7 my-14 mb-0 opacity-0 transition-opacity duration-700">Featured Products.</h1>
-
+    
     <!-- Featured Section -->
-    <section id="catalog" class="flex scale-x-80 scale-y-80 mt-0 overflow-x-hidden">
-        <button id="prev" class="carousel-nav-btn">
-            <img class="w-30 h-30" src="/assets/icons/left.svg">
-        </button>
-        
-        <div id="carousel" class="flex overflow-x-hidden snap-x snap-mandatory scroll-smooth space-x-6">
-            <div id="products-display-here" class="slider-container overflow-x-hidden px-8"></div>
+    <h1 id="feat-product" class="text-5xl font-bold mx-7 my-14 mb-0 opacity-0 transition-opacity duration-700">Featured Products.</h1>
+    <section id="catalog" class="relative flex justify-center">
+        <div id="products-display-here" class="grid grid-cols-5 gap-4 max-w-7xl m-10">
+            <!-- JS will populate this grid -->
         </div>
+    </section>
+    
+    <!-- About Us Quote -->
+    <section class="bg-black relative h-90 grid grid-cols-2 gap-4 text-gray-200">
+        <!-- Border -->
+        <img class="absolute top-0" src="/assets/icons/border2.svg">
 
-        <button id="next" class="carousel-nav-btn">
-            <img class="w-30 h-30" src="/assets/icons/right.svg">
-        </button>
+        <!-- Writing -->
+        <h1 class="flex justify-center items-center text-7xl">About Us</h1>
+        <p class="flex justify-center items-center text-bold text-wrap">"Where every click brings you closer to what you love — curated collections, seamless shopping, and a touch of inspiration in every product."</p>
+        
+        <!-- Border -->
+        <img class="absolute bottom-0 rotate-180" src="/assets/icons/border2.svg">
     </section>
 
     <!-- Just for testing
@@ -75,177 +84,150 @@ session_start();
     </script>
     -->
 
+    <!-- Footer -->
     <?php include("components/footer.php"); ?>
 
-<script>
-    // Hero animations
-    document.addEventListener("DOMContentLoaded", () => {
-      const subTitleEl = document.getElementById("hero-subtitle");
-      const titleEl = document.getElementById("hero-title");
-      const descEl = document.getElementById("hero-desc");
-      const featProd = document.getElementById("feat-product");
+    <script>
+        // Hero animations
+        document.addEventListener("DOMContentLoaded", () => {
+        const subTitleEl = document.getElementById("hero-subtitle");
+        const titleEl    = document.getElementById("hero-title");
+        const descEl     = document.getElementById("hero-desc");
+        const featProd   = document.getElementById("feat-product");
 
-            const subText = "Welcome to Our";
-            const mainText = "SHOP.";
-            let i = 0, j = 0;
+                const subText = "Welcome to Our";
+                const mainText = "SHOP.";
+                let i = 0, j = 0;
 
-            // Type "Welcome to"
-            function typeSub() {
-                if (i < subText.length) {
-                    subTitleEl.textContent = subText.substring(0, i + 1);
-                    subTitleEl.style.opacity = 1;
-                    i++;
-                    setTimeout(typeSub, 100);
-                } else {
-                    setTimeout(typeMain, 400);
-                }  
-            }
-
-            // Type "SHOP." with larger font size and lower opacity behind
-            function typeMain() {
-                if (j < mainText.length) {
-                    titleEl.textContent = mainText.substring(0, j + 1);
-                    titleEl.style.opacity = 0.4;
-                    j++;
-                    setTimeout(typeMain, 150);
-                } else {
-                    setTimeout(() => {
-                        descEl.style.opacity = 1; // Show paragraph
-                        featProd.style.opacity = 1; // Show heading
-                        }, 600);
-                    }
+                // Type "Welcome to"
+                function typeSub() {
+                    if (i < subText.length) {
+                        subTitleEl.textContent = subText.substring(0, i + 1);
+                        subTitleEl.style.opacity = 1;
+                        i++;
+                        setTimeout(typeSub, 50);
+                    } else {
+                        setTimeout(typeMain, 300);
+                    }  
                 }
 
-      // Call animation
-      typeSub();
-    });
+                // Type "SHOP." with larger font size and lower opacity behind
+                function typeMain() {
+                    if (j < mainText.length) {
+                        titleEl.textContent = mainText.substring(0, j + 1);
+                        titleEl.style.opacity = 0.4;
+                        j++;
+                        setTimeout(typeMain, 100);
+                    } else {
+                        setTimeout(() => {
+                            descEl.style.opacity = 1; // Show paragraph
+                            featProd.style.opacity = 1; // Show heading
+                            }, 400);
+                        }
+                    }
 
-    // Carousel Effect
-    const carousel = document.getElementById('carousel');
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
-
-    prevBtn.addEventListener('click', () => {
-      carousel.scrollBy({
-        left: -carousel.offsetWidth,
-        behavior: 'smooth'
-      });
-    });
-
-    nextBtn.addEventListener('click', () => {
-        carousel.scrollBy({
-            left: carousel.offsetWidth,
-            behavior: 'smooth'
+            // Call animation
+            typeSub();
         });
-    });
-  </script>
 
-    <!-- 4 spaces tabs supremacy!! -->
-    <script>
-
-        // Helper function
+        // Extract product info
         const getProductDetails = (productXML) => {
             let productId = productXML["id"];
             let productName = productXML.getElementsByTagName("name")[0].childNodes[0].nodeValue;
-            let productDesc = productXML.getElementsByTagName("desc")[0].childNodes[0].nodeValue.slice(0, 64) + "..."; // Includes a shortened version
-            let productImg = productXML.getElementsByTagName("img")[0].childNodes[0].nodeValue; // Selecting only 1 image for now
+            let productDesc = productXML.getElementsByTagName("desc")[0].childNodes[0].nodeValue.slice(0, 64) + "...";
+            let productImg = productXML.getElementsByTagName("img")[0].childNodes[0].nodeValue;
 
-            return {
-                id: productId,
-                name: productName,
-                desc: productDesc,
-                img: productImg
-            }
+            return { id: productId, name: productName, desc: productDesc, img: productImg };
         };
 
-        // JavaScript (DOM Manipulation) with XML
+        // Populate grid
         const populateCatalog = (xmlDoc) => {
-            const featuredSection = document.getElementById("products-display-here");
-            let products = xmlDoc.getElementsByTagName("product");
+            const container = document.getElementById("products-display-here");
+            const products = xmlDoc.getElementsByTagName("product");
+            if (products.length < 9) return; // Need at least 9 products
 
-            if (products.length < 5) {
-                return;
+            // Random selection
+            const selected = [];
+            while (selected.length < 9) {
+                const rnd = Math.floor(Math.random() * products.length);
+                if (!selected.includes(rnd)) selected.push(rnd);
             }
 
-            // Chooses five random products
-            const randomIndices = [];
-            while (randomIndices.length < 5) {
-                let rnd = Math.floor(Math.random() * products.length);
-                if (!randomIndices.includes(rnd)) {
-                    randomIndices.push(rnd);
-                }
-            }
+            const details = selected.map(i => getProductDetails(products[i]));
 
-            const productDetails = [];
-            for (let i = 0; i < randomIndices.length; i++) {
-                productDetails.push(getProductDetails(products[randomIndices[i]]));
-            }
-
-            // TODO: Make this code better
-            const featuredSectionHTML = `
-                <div class="row-span-2 product-card group h-[calc(100%-20px)]">
-                    <img src="/api/get_image.php?imgName=${productDetails[0].img}" 
-                        class="product-image group-hover:scale-105">
-
-                    <div class="product-overlay group-hover:translate-x-0">
-                        <div class="product-overlay-content">
-                            <p class="text-sm mb-3">${productDetails[0].desc}</p>
-                            <a href="/product/${productDetails[0].id}" class="add-to-cart-btn">View</a>
-                        </div>
+            // Grid HTML
+            container.innerHTML = `
+            <!-- 1st Column -->
+            <div class="grid grid-rows-2 gap-4 items-end">
+                <div class="product-card row-span-2 h-[300px] self-end">
+                    <img src="/api/get_image.php?imgName=${details[0].img}" alt="${details[0].name}" class="product-image">
+                    <div class="product-overlay">
+                        <div class="product-name">${details[0].name}</div>
+                        <div class="product-desc">${details[0].desc}</div>
+                        <a href="/product/${details[0].id}" class="product-link">View</a>
                     </div>
                 </div>
-
-                <div class="grid grid-rows-2 gap-4">
-                    <div class="product-card group">
-                        <img src="/api/get_image.php?imgName=${productDetails[1].img}"
-                            class="product-image group-hover:scale-105">
-                        
-                        <div class="product-overlay group-hover:translate-x-0">
-                            <div class="product-overlay-content">
-                                <p class="text-sm mb-3">${productDetails[1].desc}</p>
-                                <a href="/product/${productDetails[1].id}" class="add-to-cart-btn">View</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card group">
-                        <img src="/api/get_image.php?imgName=${productDetails[2].img}"
-                            class="product-image group-hover:scale-105">
-                        <div class="product-overlay group-hover:translate-x-0">
-                            <div class="product-overlay-content">
-                                <p class="text-sm mb-3">${productDetails[2].desc}</p>
-                                <a href="/product/${productDetails[2].id}" class="add-to-cart-btn">View</a>
-                            </div>
-                        </div>
+                <div class="product-card h-[150px] self-start">
+                    <img src="/api/get_image.php?imgName=${details[1].img}" alt="${details[1].name}" class="product-image">
+                    <div class="product-overlay">
+                        <div class="product-name">${details[1].name}</div>
+                        <div class="product-desc">${details[1].desc}</div>
+                        <a href="/product/${details[1].id}" class="product-link">View</a>
                     </div>
                 </div>
+            </div>
 
-                <div class="grid grid-rows-2 gap-4">
-                    <div class="product-card group">
-                        <img src="/api/get_image.php?imgName=${productDetails[3].img}"
-                            class="product-image group-hover:scale-105">
-                        <div class="product-overlay group-hover:translate-x-0">
-                            <div class="product-overlay-content">
-                                <p class="text-sm mb-3">${productDetails[3].desc}</p>
-                                <a href="/product/${productDetails[3].id}" class="add-to-cart-btn">View</a>
-                            </div>
-                        </div>
-                    </div>
+            <!-- 2nd Column -->
+            <div class="product-card h-[350px] self-end">
+                <img src="/api/get_image.php?imgName=${details[2].img}" alt="${details[2].name}" class="product-image">
+                <div class="product-overlay">
+                    <div class="product-name">${details[2].name}</div>
+                    <div class="product-desc">${details[2].desc}</div>
+                    <a href="/product/${details[2].id}" class="product-link">View</a>
+                </div>
+            </div>
 
-                    <div class="product-card group">
-                        <img src="/api/get_image.php?imgName=${productDetails[4].img}"
-                            class="product-image group-hover:scale-105">
-                        <div class="product-overlay group-hover:translate-x-0">
-                            <div class="product-overlay-content">
-                                <p class="text-sm mb-3">${productDetails[4].desc}</p>
-                                <a href="/product/${productDetails[4].id}" class="add-to-cart-btn">View</a>
-                            </div>
-                        </div>
+            <!-- 3rd Column -->
+            <div class="product-card h-[300px] self-end">
+                <img src="/api/get_image.php?imgName=${details[3].img}" alt="${details[3].name}" class="product-image">
+                <div class="product-overlay">
+                    <div class="product-name">${details[3].name}</div>
+                    <div class="product-desc">${details[3].desc}</div>
+                    <a href="/product/${details[3].id}" class="product-link">View</a>
+                </div>
+            </div>
+
+            <!-- 4th Column -->
+            <div class="product-card h-[350px] self-end">
+                <img src="/api/get_image.php?imgName=${details[4].img}" alt="${details[4].name}" class="product-image">
+                <div class="product-overlay">
+                    <div class="product-name">${details[4].name}</div>
+                    <div class="product-desc">${details[4].desc}</div>
+                    <a href="/product/${details[4].id}" class="product-link">View</a>
+                </div>
+            </div>
+
+            <!-- 5th Column -->
+            <div class="grid grid-rows-2 gap-4 items-end">
+                <div class="product-card row-span-2 h-[300px] self-end">
+                    <img src="/api/get_image.php?imgName=${details[5].img}" alt="${details[5].name}" class="product-image">
+                    <div class="product-overlay">
+                        <div class="product-name">${details[5].name}</div>
+                        <div class="product-desc">${details[5].desc}</div>
+                        <a href="/product/${details[5].id}" class="product-link">View</a>
                     </div>
                 </div>
+                <div class="product-card h-[150px] self-start">
+                    <img src="/api/get_image.php?imgName=${details[6].img}" alt="${details[6].name}" class="product-image">
+                    <div class="product-overlay">
+                        <div class="product-name">${details[6].name}</div>
+                        <div class="product-desc">${details[6].desc}</div>
+                        <a href="/product/${details[6].id}" class="product-link">View</a>
+                    </div>
+                </div>
+            </div>
             `;
 
-            featuredSection.innerHTML = featuredSectionHTML;
         };
 
         // AJAX with XML

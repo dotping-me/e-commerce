@@ -26,7 +26,7 @@
 
                 <a href="/" class="links">Home</a>
                 <a href="/catalog" class="links">Catalog</a>
-                <a href="#" class="links">About Us</a>
+                <a href="/aboutus" class="links">About Us</a>
             </div>
 
             <!-- Right User & Cart -->

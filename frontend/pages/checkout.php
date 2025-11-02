@@ -8,6 +8,8 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - Checkout</title>
 
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo.svg">
+
     <!-- Tailwind CLI -->
     <link href="/css/output.css" rel="stylesheet">
 </head>

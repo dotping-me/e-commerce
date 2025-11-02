@@ -72,44 +72,41 @@
         @apply p-2 rounded-full hover:bg-gray-500 transition-colors duration-300;
     }
 
-    /* Product Card */
-    .product-card {
-        @apply relative overflow-hidden rounded-2xl shadow-xl transition-transform duration-500 hover:translate-y-0;
-    }
-
-    .product-image {
-        @apply w-full h-full object-cover transition-transform duration-500;
-    }
-
-    .product-overlay {
-        @apply absolute inset-y-0 right-0 w-1/2 bg-white/70 backdrop-blur-md translate-x-full 
-        transition-transform duration-700 ease-out;
-    }
-
-    /* Overlay content */
-    .product-overlay-content {
-        @apply relative z-10 flex flex-col items-center justify-center h-full text-gray-800 p-4 text-center;
-    }
-
-    /* Button */
-    .add-to-cart-btn {
-        @apply px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-colors;
-    }
-
-    .fade-edge::before { content: ''; @apply absolute left-0 top-0 h-full w-6 bg-linear-to-l from-transparent to-white/70; }
-
     /* Icons */
     .icon {
         @apply w-6 h-6;
     }
 
-    .carousel-nav-btn {
-        @apply bg-white/30 backdrop-blur-2xl rounded-2xl shadow-xl p-2 m-4;
+    /* Product Card */
+    .product-card {
+        @apply relative overflow-hidden rounded-2xl shadow-lg transition-transform duration-500 hover:scale-105;
     }
-
-    .slider-container {
-        @apply min-w-full grid grid-cols-3 gap-4 max-w-7xl mx-auto snap-start;
+    
+    /* Product Image */
+    .product-image {
+        @apply w-full h-full object-cover rounded-2xl transition-transform duration-500;
     }
+    
+    /* Hover Overlay */
+    .product-overlay {
+        @apply absolute inset-0 bg-black/60 opacity-0 flex flex-col justify-end p-4 text-white transition-opacity duration-300;
+    }
+    
+    .product-card:hover .product-overlay {
+        @apply opacity-100;
+    }
+    
+    .product-name {
+        @apply font-bold text-lg;
+    }
+    
+    .product-desc {
+        @apply text-sm mt-1 line-clamp-2;
+    }
+    
+    .product-link {
+        @apply mt-2 inline-block bg-white/80 text-black px-3 py-1 rounded-full hover:bg-white transition;
+    }     
 
     /* For Product Page */
     #product-images-carousel-container {
@@ -235,7 +232,6 @@
     .input-invalid {
         @apply border-red-500;
     }
-
 
     /* For delete button in cart */
     .red-filter {

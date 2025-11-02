@@ -1,4 +1,4 @@
-<footer class="bg-gray-700 text-gray-200 pt-4 rounded-t-2xl shadow-2xl">
+<footer class="bg-gray-700 text-gray-200 pt-6 rounded-t-2xl shadow-2xl">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
 
         <!-- Shop Info -->
@@ -15,8 +15,7 @@
             <ul class="space-y-2 text-gray-400">
                 <li><a href="/" class="links">Home</a></li>
                 <li><a href="/catalog" class="links">Products</a></li>
-                <li><a href="#" class="links">About</a></li>
-                <li><a href="#" class="links">Contact</a></li>
+                <li><a href="/aboutus" class="links">About</a></li>
             </ul>
         </div>
 
@@ -24,7 +23,6 @@
         <div>
             <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
             <ul class="space-y-2 text-gray-400">
-                <!-- <li><a href="#" class="links">FAQ</a></li> -->
                 <li><a href="/checkout" class="links">Checkout</a></li>
             </ul>
         </div>
