@@ -19,7 +19,10 @@
                 session_start();
                 $_SESSION["user"] = [
                     "firstName" => (string)$user->firstName,
+                    "lastName" => (string)$user->lastName,
                     "email"     => $email,
+                    "phone" => (string)$user->phone,
+
                     // To recognize an admin
                     "isAdmin"   => ((string)$user->admin === "1")
                 ];

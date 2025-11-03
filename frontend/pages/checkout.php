@@ -30,25 +30,25 @@ session_start();
           <!-- First Name -->
           <div class="flex flex-col">
             <label class="label-field">FIRST NAME</label>
-            <input name="firstName" type="text" class="checkout-field" placeholder="Enter First Name" />
+            <input id="firstName" name="firstName" type="text" class="checkout-field" placeholder="Enter First Name" />
           </div>
 
           <!-- Last Name -->
           <div class="flex flex-col">
             <label class="label-field">LAST NAME</label>
-            <input name="lastName" type="text" class="checkout-field" placeholder="Enter Last Name" />
+            <input id= "lastName"name="lastName" type="text" class="checkout-field" placeholder="Enter Last Name" />
           </div>
 
           <!-- Phone -->
           <div class="flex flex-col">
             <label class="label-field">PHONE</label>
-            <input name="phone" type="text" class="checkout-field" placeholder="5xxxxxxx" />
+            <input id="phone" name="phone" type="text" class="checkout-field" placeholder="5xxxxxxx" />
           </div>
 
           <!-- Email -->
           <div class="flex flex-col">
             <label class="label-field">EMAIL</label>
-            <input name="email" type="text" class="checkout-field" placeholder="xxxxxxx@gmail.com" />
+            <input id="email" name="email" type="text" class="checkout-field" placeholder="xxxxxxx@gmail.com" />
           </div>
         </div>
       </form>
@@ -140,8 +140,8 @@ session_start();
     }
 
     /* ********** LOAD CART ********** */
+    let totalPrice = 0;
     async function displayCart() {
-        let totalPrice = 0;
         cartDisplayContainer.innerHTML = "";
         cartTotalPriceIndicator.innerHTML = "";
 
@@ -172,7 +172,7 @@ session_start();
 
             cartTotalPriceIndicator.innerHTML = `
                 <div class="flex justify-between mt-4 font-bold text-lg border-t border-gray-300 pt-4">
-                    <span>Total:</span><span>MUR ${totalPrice}</span>
+                    <span>Total:</span><span id="totalPrice">MUR ${totalPrice}</span>
                 </div>
                 <div class="mt-4">
                     <button id="done-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer active:scale-95">Done</button>
@@ -212,10 +212,26 @@ session_start();
 
         // Checkout went through
         if (validContact && validStore) {
-          showPopup("Checkout complete! Thank you for your order.");
-          $("#checkout-form").reset();
-          $("#store-form").reset();
-          $("#store-form").classList.add("hidden");
+            let email = document.getElementById("email").value.trim();
+            const payload = {
+              email: email,
+              total: totalPrice,
+              order: getCart()
+            };
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/add_order.php", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    showPopup("Checkout complete! Thank you for your order.");
+                    $("#checkout-form").reset();
+                    $("#store-form").reset();
+                    $("#store-form").classList.add("hidden");
+                }
+            };
+            
+            xhr.send(JSON.stringify(payload));
         }
       }
     });
@@ -223,6 +239,23 @@ session_start();
     window.onload = () => {
         loadCart();
         displayCart();
+
+        // Autofill if user is already logged in
+        <?php
+        if (isset($_SESSION["user"])) {
+          $firstname = $_SESSION["user"]["firstName"];
+          echo "document.getElementById('firstName').value = '$firstname';";
+
+          $lastname = $_SESSION["user"]["lastName"];
+          echo "document.getElementById('lastName').value = '$lastname';";
+
+          $phone = $_SESSION["user"]["phone"];
+          echo "document.getElementById('phone').value = '$phone';";
+
+          $email = $_SESSION["user"]["email"];
+          echo "document.getElementById('email').value = '$email';";
+        }
+        ?>
     }
   </script>
 

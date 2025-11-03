@@ -37,12 +37,23 @@
     $newUser->addChild("email", $email);
     $newUser->addChild("phone", $phone);
     $newUser->addChild("password", $password);
-    // Default not admin
-    $newUser->addChild("admin", 0); 
+    
+    $newUser->addChild("admin", 0); // Default not admin
     
     // Saves the xml file
     $xml -> asXML($xmlFile);
 
+    // Creates Session
+    session_destroy();
+    $_SESSION["user"] = [
+        "firstName" => $firstName,
+        "lastName" => $lastName,
+        "email" => $email,
+        "phone" => $phone,
+        "isAdmin" => "0"
+    ];
+
+    http_response_code(200);
     echo json_encode(["success" => true, "message" => "Account created successfully!"]);
     exit;
 ?>
