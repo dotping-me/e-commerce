@@ -22,39 +22,47 @@ session_start();
     <!-- Hero Section -->
     <section id="hero" class="relative h-96 flex flex-col items-center justify-center text-center bg-cover bg-center" style="background-image: url('/assets/images/bghero.avif');">
         <div class="relative mt-20">
-            <h2 id="hero-subtitle" class="text-4xl text-white font-bold mt-13 opacity-0"></h2>
-            <h1 id="hero-title" class="text-9xl font-extrabold text-shadow-lg/20 text-white opacity-0 absolute left-1/2 -translate-x-1/2 -top-10 tracking-wide mix-blend-overlay"></h1>
+            <h1 id="hero-title" class="text-6xl sm:text-7xl md:text-9xl font-extrabold text-shadow-lg/20 text-white opacity-0 absolute left-1/2 -translate-x-1/2 -top-10 mix-blend-overlay"></h1>
+            <h2 id="hero-subtitle" class="text-2xl sm:text-3xl md:text-4xl text-white font-bold md:mt-13 opacity-0"></h2>
         </div>
 
-        <p id="hero-desc" class="max-w-lg text-gray-100 text-base mt-12 opacity-0 transition-opacity duration-700">
+        <p id="hero-desc" class="max-w-xs sm:max-w-md md:max-w-lg text-gray-100 text-sm sm:text-base md:text-base mt-12 opacity-0 transition-opacity duration-700">
             Discover products of the highest quality, tailored for your needs. Start your journey today.
         </p>
     </section>
 
     <!-- Section Divider -->
-    <img class="absolute opacity-40" src="/assets/icons/divider.svg">
+    <img class="absolute opacity-40 w-full h-auto" src="/assets/icons/divider.svg">
     
     <!-- Featured Section -->
     <h1 id="feat-product" class="text-5xl font-bold mx-7 my-14 mb-0 opacity-0 transition-opacity duration-700">Featured Products.</h1>
     <section id="catalog" class="relative flex justify-center">
-        <div id="products-display-here" class="grid grid-cols-5 gap-4 max-w-7xl m-10">
-            <!-- JS will populate this grid -->
+        <div id="products-display-here" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 max-w-7xl m-10">
+        <!-- JS will populate this grid -->
         </div>
     </section>
     
     <!-- About Us Quote -->
-    <section class="mt-8 mb-24 bg-black relative h-90 grid grid-cols-2 gap-4 text-gray-200">
-        <!-- Border -->
-        <img class="absolute top-0" src="/assets/icons/border2.svg">
+    <section class="bg-black relative h-90 grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-200 px-6 py-16">
+        <!-- Top Border -->
+        <img class="absolute top-0 w-full h-auto" src="/assets/icons/border2.svg" alt="border">
 
-        <!-- Writing -->
-        <h1 class="flex justify-center items-center text-7xl">About Us</h1>
-        <p class="flex justify-center items-center text-bold text-wrap">"Where every click brings you closer to what you love — curated collections, seamless shopping, and a touch of inspiration in every product."</p>
-        
-        <!-- Border -->
-        <img class="absolute bottom-0 rotate-180" src="/assets/icons/border2.svg">
+        <!-- Title -->
+        <h1 class="flex justify-center items-center text-5xl sm:text-6xl md:text-7xl font-bold">
+            About Us
+        </h1>
+
+        <!-- Paragraph -->
+        <p class="flex justify-center items-center text-base sm:text-lg md:text-xl">
+            "Where every click brings you closer to what you love — curated collections,
+            seamless shopping, and a touch of inspiration in every product."
+        </p>
+
+        <!-- Bottom Border -->
+        <img class="absolute bottom-0 rotate-180 w-full h-auto" src="/assets/icons/border2.svg" alt="border">
     </section>
 
+    <!-- Footer -->
     <?php include("components/footer.php"); ?>
 
     <script>

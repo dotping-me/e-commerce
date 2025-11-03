@@ -40,13 +40,13 @@
     
 }
 
-/* Transition for hero texts */
 @layer components {
     html {scroll-behavior: smooth}
     body {@apply bg-gray-100 font-body;}
-
+    
     h1 {@apply font-heading;}
-
+    
+    /* Transition for hero texts */
     #hero h1,
     #hero h2,
     #hero p {
@@ -85,8 +85,8 @@
     
     /* Product Image */
     .product-image {
-        @apply w-full h-full object-cover rounded-2xl transition-transform duration-500;
-    }
+        @apply w-full h-full object-cover rounded-2xl transition-transform duration-500 object-center;
+    }      
     
     /* Hover Overlay */
     .product-overlay {
@@ -95,6 +95,17 @@
     
     .product-card:hover .product-overlay {
         @apply opacity-100;
+    }
+
+    /* For mobile tap to show overlay */
+    @media (hover: none) and (pointer: coarse) {
+        .product-card .product-overlay {
+          opacity: 1 !important;
+        }
+    
+        .product-card:hover .product-overlay {
+          opacity: 1 !important;
+        }
     }
     
     .product-name {
@@ -163,7 +174,7 @@
         @apply border-t border-gray-200 pt-4;
     }
 
-    /* ---------------- Checkout Page ---------------- */
+    /* Checkout Page */
     .checkout-field {
       @apply p-2 rounded-2xl border border-gray-500 text-gray-600;
     }
@@ -172,7 +183,7 @@
         @apply text-gray-500 font-bold p-2 text-sm;
     }
     
-    /* ---------------- Popup ---------------- */
+    /* Popup */
     #overlay {
       position: fixed;
       inset: 0;
