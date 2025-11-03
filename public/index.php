@@ -10,7 +10,7 @@ $frontendRoutes = [
     "cart" => "cart.php",
     "catalog" => "catalog.php",
     "checkout" => "checkout.php",
-    "dashboard" => "dashboard.php"
+    "dashboard" => "dashboard.php",
     "signup" => "signup.html",
     "aboutus" => "aboutus.php",
 ];
