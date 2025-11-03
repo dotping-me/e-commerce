@@ -3,6 +3,7 @@
 
 // TODO: Block access to manually using /backend/...
 // TODO: Block access to manually using /frontend/pages/...
+// TODO: Auth protected pages
 // TODO: Clean up this file
 
 $frontendRoutes = [
@@ -11,6 +12,7 @@ $frontendRoutes = [
     "cart" => "cart.php",
     "catalog" => "catalog.php",
     "checkout" => "checkout.php",
+    "admin" => "dashboard.php"
 ];
 
 $DIR = substr(__DIR__, 0, strpos(__DIR__, "public"));

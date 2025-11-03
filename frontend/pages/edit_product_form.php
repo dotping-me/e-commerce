@@ -465,7 +465,6 @@ $prodId = $GLOBALS["prodId"];
                     let res = JSON.parse(xhr.responseText);
 
                     // Handle image upload
-                    const uploadedImages = editProdForm.prodImg.files;
                     uploadImagesAjax("<?php echo $prodId; ?>");
                 }
             };
@@ -497,7 +496,8 @@ $prodId = $GLOBALS["prodId"];
 
                 // Proceed with uploading new images
                 if ((xhr.readyState == 4) && (xhr.status == 200)) {
-                    uploadNewImages(prodId, imageUploads);
+                    let imagesToAdd = [...productImages.filter(img => !initialState.images.includes(img))];
+                    uploadNewImages(prodId, imagesToAdd);
                 }
 
             };

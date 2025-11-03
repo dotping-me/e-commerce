@@ -44,7 +44,7 @@ foreach ($xml->children() as $category) {
 
             // This file is used when updating images for a product as well
             // So products might already have an <images> tag so no need to
-            // make a new one
+            // make a new one 
             
             if (!isset($prod->images)) {
                 $prodXmlImages = $prod->addChild("images");

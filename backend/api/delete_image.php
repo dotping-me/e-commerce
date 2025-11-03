@@ -12,13 +12,12 @@ $prodId = trim($data["prodId"]);
 $imagesToDelete = $data["imagesToDelete"]; // Array of image names
 $imageDirPath = substr(__DIR__, 0, strpos(__DIR__, "api")) . "data/images";
 
+error_log("Images to delete: " . implode(', ', $imagesToDelete));
+
 // Delete images
 foreach ($imagesToDelete as $img) {
     $filePath = $imageDirPath . "/" . $img;
-    
-    if (file_exists($filePath)) {
-        unlink($filePath);
-    }
+    unlink($filePath);
 }
 
 // Delete respective tags from XML
