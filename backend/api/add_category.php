@@ -13,7 +13,7 @@ if (!isset($data["categoryName"]) || empty(trim($data["categoryName"]))) {
     exit;
 }
 
-$categoryName = trim(data["categoryName"]);
+$categoryName = trim($data["categoryName"]);
 
 // Creates new category
 $filepath = substr(__DIR__, 0, strpos(__DIR__, "api")) . "data/products.xml";

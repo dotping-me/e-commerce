@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<products>
+<allproducts>
     <category name="Electronics">
         <product id="prod_2"><name>Circular Smartwatch</name><desc>Elegant design for modern living. I&amp;#039;m trying to check if updating works... Hopefully yes</desc><price>350</price><details><dt name="Colour">White</dt><dt name="Finish">Matte</dt></details><images><img>prod_3_68fdc751648bb1.79892645.jpg</img></images></product>
         <product id="prod_3"><name>Headphones</name><desc>Crafted with fine attention to detail.</desc><price>400</price><details><dt name="Colour">Black</dt><dt name="Padding">Cushioned</dt></details><images><img>prod_4_68fdc7e8c47ef2.58758582.jpg</img></images></product>
@@ -13,4 +13,4 @@
    
    <category name="Others">
    <product id="prod_1"><name>Water Bottle</name><desc>A timeless design made with quality materials.</desc><price>200</price><details><dt name="Colour">Dark Green</dt><dt name="Finish">Matte</dt></details><images><img>prod_2_68fdc6d9734116.10939666.jpg</img></images></product></category>
-</products>
+</allproducts>

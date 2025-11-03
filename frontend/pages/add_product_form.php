@@ -352,7 +352,7 @@ if (!isset($_SESSION["username"])) {
             if (err) {
                 
                 // Show modal
-                modalStatusMessage.innerHTML = `<h1>Error!</h1><p>${err}</p>`;
+                modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-red-600">Error!</h1><p class="mb-4 text-red-500">${err}</p>`;
                 showModalBtn.click();
 
                 return;
@@ -406,7 +406,7 @@ if (!isset($_SESSION["username"])) {
                     // Product successfully added
                     // Thus, show modal
 
-                    modalStatusMessage.innerHTML = `<h1>Product added successfully!</h1><a href="/product/${res.product_id}">See new product here!</a>`;
+                    modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-green-600">Success!</h1><p class="mb-4 text-green-600">Product added successfully!</p><a href="/product/${prodId}" class="font-medium text-md text-blue-600 hover:underline">See product here!</a>`;
                     showModalBtn.click();
                 }
             };
