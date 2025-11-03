@@ -34,10 +34,11 @@ session_start();
         </div>
     </form>
 
-    <section class="section-layout mt-0">
+    <!-- Catalog -->
+    <section class="section-layout mt-0 flex flex-col md:flex-row gap-6">
 
-        <!-- Sidebar -->
-        <div class="bg-white w-64 p-6 rounded-2xl border border-gray-200 shadow-sm">
+        <!-- Side Filter -->
+        <div class="bg-white w-full md:w-64 p-6 rounded-2xl border border-gray-200 shadow-sm">
             <div class="mb-4 p-2 border-b-2 border-gray-200">
                 <h1 class="text-lg font-semibold">Filter</h1>
             </div>
@@ -74,16 +75,15 @@ session_start();
         <div class="w-full h-full p-2 border border-gray-200 rounded-2xl shadow-sm">
 
             <!-- Filter Bar -->
-            <div id="filter-bar" class="flex gap-2 items-center w-full p-2 border-b-2 border-gray-200">
+            <div id="filter-bar" class="flex flex-wrap gap-2 items-center w-full p-2 border-b-2 border-gray-200">
                 <p class="text-gray-500">Applied Filters:</p>
                 <div id="applied-filters" class="flex flex-wrap gap-2"></div>
             </div>
 
             <!-- Products Section -->
-            <div id="products" class="grid grid-cols-3 gap-4 mt-4"></div>
+            <div id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4"></div>
 
         </div>
-
     </section>
 
     <!-- Footer -->
@@ -92,7 +92,7 @@ session_start();
     <script>
         let allProductsData;
 
-        // Sidebar toggle open and close
+        // Side toggle open and close
         document.querySelectorAll(".category-toggle").forEach(toggle => {
             toggle.addEventListener("click", () => {
                 const filterList = toggle.nextElementSibling;
