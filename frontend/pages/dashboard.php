@@ -65,6 +65,11 @@ if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "
                     <img class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" src="/assets/icons/cart.svg" alt="Products">
                     <span class="font-medium text-gray-700 group-hover:text-gray-900">Products</span>
                 </a>
+
+                <a href="#orders" class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 group">
+                    <img class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" src="/assets/icons/order.svg" alt="Orders">
+                    <span class="font-medium text-gray-700 group-hover:text-gray-900">Orders</span>
+                </a>
             </nav>
         </div>
 
@@ -119,7 +124,7 @@ if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "
             </div>
 
             <!-- Products -->
-            <div id="products">
+            <div id="products" class="mb-8">
                 <div class="w-full flex justify-between items-center pb-2 border-b-2 border-gray-200 mb-6">
                     <h1 class="text-2xl font-bold text-gray-900">Products</h1>
                     <button onclick="window.location.href = '/product/add'" class="h-10 px-4 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 cursor-pointer">Add</button>
@@ -137,7 +142,25 @@ if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "
                     </tbody>
                 </table>
             </div>
+
+            <!-- Orders -->
+            <div id="orders">
+                <h1 class="text-2xl font-bold text-gray-900">Orders</h1>
+                <table id="orders-table" class="w-full border-collapse">
+                    <thead>
+                        <th>Email</th>
+                        <th># of Items</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </thead>
+
+                    <tbody id="orders-table-body">
+                        <!-- Populated with JS -->
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </section>
 
     <?php include("components/footer.php"); ?>
@@ -148,6 +171,7 @@ if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "
         const usersTable = document.getElementById("users-table-body");
         const categoriesTable = document.getElementById("categories-table-body");
         const productsTable = document.getElementById("products-table-body");
+        const ordersTable = document.getElementById("orders-table-body");
         
         const showModalBtn = document.getElementById("toggle-modal-btn");
         const modalStatusMessage = document.getElementById("status-message");
@@ -155,6 +179,7 @@ if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "
         window.onload = () => {
             loadProducts();
             loadUsers();
+            loadOrders();
         };
 
         // Populating Categories and Products tables
@@ -313,6 +338,7 @@ if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "
             usersTable.innerHTML = "";
 
             const xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/get_all_users.php", true);
             xhr.onreadystatechange = () => {
                 if ((xhr.readyState == 4) && (xhr.status == 200)) {
 
@@ -346,7 +372,6 @@ if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "
                 }
             };
 
-            xhr.open("GET", "/api/get_all_users.php", true);
             xhr.send();
         }
 
@@ -367,6 +392,64 @@ if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "
                     showModalBtn.click();
 
                     loadUsers(); // Reload users
+                }
+            };
+            
+            xhr.send(JSON.stringify(payload));
+        }
+
+        // Orders
+        function loadOrders() {
+            ordersTable.innerHTML = "";
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/get_all_orders.php", true);
+            xhr.onreadystatechange = () => {
+                if ((xhr.readyState == 4) && (xhr.status == 200)) {
+
+                    // Fills in table
+                    const allOrders = JSON.parse(xhr.responseText);
+                    allOrders.all_orders.forEach(order => {
+                        let id = order.id;
+                        let email = order.email;
+                        let numOfItems = order.order.length;
+                        let totalPrice = order.total;
+
+                        const row = document.createElement("tr");
+                        row.className = `order-${id}`;
+                        row.innerHTML = `
+                            <td>${email}</td>
+                            <td>${numOfItems}</td>
+                            <td>${totalPrice}</td>
+                            <td class="flex items-center gap-1">
+                                <button class="delete-btn" onclick="deleteThisOrder('${id}')">Delete</button>
+                            </td>
+                        `;
+
+                        ordersTable.appendChild(row);
+                    });
+                }
+            };
+
+            xhr.send();
+        }
+
+        function deleteThisOrder(orderId) {
+            const payload = {
+                id: orderId
+            };
+            
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/delete_order.php", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-green-600">Success!</h1><p class="mb-4 text-green-600">Order deleted successfully!</p>`;
+                    showModalBtn.click();
+
+                    // Deletes the row
+                    let row = document.getElementsByClassName(`order-${orderId}`)[0];
+                    ordersTable.removeChild(row);
                 }
             };
             

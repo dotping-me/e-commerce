@@ -20,7 +20,7 @@ session_start();
     <?php include("components/header.php"); ?>
 
     <!-- Hero Section -->
-    <section id="hero" class="relative h-96 flex flex-col items-center justify-center text-center bg-cover bg-center" style="background-image: url('/assets/images/bghero.avif');">
+    <section id="hero" class="relative h-96 flex flex-col items-center justify-center text-center bg-cover bg-center" style="background-image: url('/assets/images/bghero.avif'); clip-path:  ellipse(100% 55% at 48% 44%)">
         <div class="relative mt-20">
             <h1 id="hero-title" class="text-6xl sm:text-7xl md:text-9xl font-extrabold text-shadow-lg/20 text-white opacity-0 absolute left-1/2 -translate-x-1/2 -top-10 mix-blend-overlay"></h1>
             <h2 id="hero-subtitle" class="text-2xl sm:text-3xl md:text-4xl text-white font-bold md:mt-13 opacity-0"></h2>
@@ -30,9 +30,6 @@ session_start();
             Discover products of the highest quality, tailored for your needs. Start your journey today.
         </p>
     </section>
-
-    <!-- Section Divider -->
-    <img class="absolute opacity-40 w-full h-auto" src="/assets/icons/divider.svg">
     
     <!-- Featured Section -->
     <h1 id="feat-product" class="text-5xl font-bold mx-7 my-14 mb-0 opacity-0 transition-opacity duration-700">Featured Products.</h1>
@@ -43,7 +40,7 @@ session_start();
     </section>
     
     <!-- About Us Quote -->
-    <section class="bg-black relative h-90 grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-200 px-6 py-16">
+    <section class="my-24 bg-black relative h-90 grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-200 px-6 py-16">
         <!-- Top Border -->
         <img class="absolute top-0 w-full h-auto" src="/assets/icons/border2.svg" alt="border">
 
@@ -112,7 +109,7 @@ session_start();
         const getProductDetails = (productXML) => {
             let productId = productXML["id"];
             let productName = productXML.getElementsByTagName("name")[0].childNodes[0].nodeValue;
-            let productDesc = productXML.getElementsByTagName("desc")[0].childNodes[0].nodeValue.slice(0, 64) + "...";
+            let productDesc = productXML.getElementsByTagName("desc")[0].childNodes[0].nodeValue.slice(0, 24) + "...";
             let productImg = productXML.getElementsByTagName("img")[0].childNodes[0].nodeValue;
 
             return { id: productId, name: productName, desc: productDesc, img: productImg };
@@ -122,7 +119,12 @@ session_start();
         const populateCatalog = (xmlDoc) => {
             const container = document.getElementById("products-display-here");
             const products = xmlDoc.getElementsByTagName("product");
-            if (products.length < 9) return; // Need at least 9 products
+            
+            // Need at least 9 products
+            if (products.length < 9) {
+                container.innerHTML = "<p class='absolute left-[35%] text-gray-400 py-2 italic font-bold'>We currently have nothing listed. Check back later!</p>";
+                return;
+            }
 
             // Random selection
             const selected = [];

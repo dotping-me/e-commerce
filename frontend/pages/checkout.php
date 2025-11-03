@@ -27,16 +27,13 @@ if (isset($_SESSION['user'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Shop - Checkout</title>
-
     <link rel="icon" type="image/svg+xml" href="/assets/icons/logo.svg">
 
-    <!-- Tailwind CLI -->
     <link href="/css/output.css" rel="stylesheet">
 </head>
 <body>
-    
-  <!-- Navigation Bar -->
   <?php include("components/header.php"); ?>
 
   <!-- Heading -->
@@ -53,30 +50,26 @@ if (isset($_SESSION['user'])) {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- First Name -->
           <div class="flex flex-col">
-              <label class="label-field">FIRST NAME</label>
-              <input name="firstName" type="text" class="checkout-field" placeholder="Enter First Name" 
-                    value="<?= $firstName ?>" />
+            <label class="label-field">FIRST NAME</label>
+            <input id="firstName" name="firstName" type="text" class="checkout-field" placeholder="Enter First Name" />
           </div>
 
           <!-- Last Name -->
           <div class="flex flex-col">
-              <label class="label-field">LAST NAME</label>
-              <input name="lastName" type="text" class="checkout-field" placeholder="Enter Last Name" 
-                    value="<?= $lastName ?>" />
+            <label class="label-field">LAST NAME</label>
+            <input id= "lastName"name="lastName" type="text" class="checkout-field" placeholder="Enter Last Name" />
           </div>
 
           <!-- Phone -->
           <div class="flex flex-col">
-              <label class="label-field">PHONE</label>
-              <input name="phone" type="text" class="checkout-field" placeholder="5xxxxxxx" 
-                    value="<?= $phone ?>" />
+            <label class="label-field">PHONE</label>
+            <input id="phone" name="phone" type="text" class="checkout-field" placeholder="5xxxxxxx" />
           </div>
 
           <!-- Email -->
           <div class="flex flex-col">
-              <label class="label-field">EMAIL</label>
-              <input name="email" type="text" class="checkout-field" placeholder="xxxxxxx@gmail.com" 
-                    value="<?= $email ?>" />
+            <label class="label-field">EMAIL</label>
+            <input id="email" name="email" type="text" class="checkout-field" placeholder="xxxxxxx@gmail.com" />
           </div>
       </div>
     </form>
@@ -171,8 +164,8 @@ if (isset($_SESSION['user'])) {
     }
 
     /* ********** LOAD CART ********** */
+    let totalPrice = 0;
     async function displayCart() {
-        let totalPrice = 0;
         cartDisplayContainer.innerHTML = "";
         cartTotalPriceIndicator.innerHTML = "";
 
@@ -203,7 +196,7 @@ if (isset($_SESSION['user'])) {
 
             cartTotalPriceIndicator.innerHTML = `
                 <div class="flex justify-between mt-4 font-bold text-lg border-t border-gray-300 pt-4">
-                    <span>Total:</span><span>MUR ${totalPrice}</span>
+                    <span>Total:</span><span id="totalPrice">MUR ${totalPrice}</span>
                 </div>
                 <div class="mt-4">
                     <button id="done-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer active:scale-95">Done</button>
@@ -241,11 +234,28 @@ if (isset($_SESSION['user'])) {
         const storeVisible = !$("#store-form").classList.contains("hidden");
         const validStore = storeVisible ? validateForm($("#store-form")) : true;
 
+        // Checkout went through
         if (validContact && validStore) {
-          showPopup("Checkout complete! Thank you for your order.");
-          $("#checkout-form").reset();
-          $("#store-form").reset();
-          $("#store-form").classList.add("hidden");
+            let email = document.getElementById("email").value.trim();
+            const payload = {
+              email: email,
+              total: totalPrice,
+              order: getCart()
+            };
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/add_order.php", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    showPopup("Checkout complete! Thank you for your order.");
+                    $("#checkout-form").reset();
+                    $("#store-form").reset();
+                    $("#store-form").classList.add("hidden");
+                }
+            };
+            
+            xhr.send(JSON.stringify(payload));
         }
       }
     });
@@ -253,6 +263,23 @@ if (isset($_SESSION['user'])) {
     window.onload = () => {
         loadCart();
         displayCart();
+
+        // Autofill if user is already logged in
+        <?php
+        if (isset($_SESSION["user"])) {
+          $firstname = $_SESSION["user"]["firstName"];
+          echo "document.getElementById('firstName').value = '$firstname';";
+
+          $lastname = $_SESSION["user"]["lastName"];
+          echo "document.getElementById('lastName').value = '$lastname';";
+
+          $phone = $_SESSION["user"]["phone"];
+          echo "document.getElementById('phone').value = '$phone';";
+
+          $email = $_SESSION["user"]["email"];
+          echo "document.getElementById('email').value = '$email';";
+        }
+        ?>
     }
   </script>
 
