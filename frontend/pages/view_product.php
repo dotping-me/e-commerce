@@ -1,8 +1,6 @@
 <?php
-$prodId = $GLOBALS["prodId"];
-// session_start();
+session_start();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +8,8 @@ $prodId = $GLOBALS["prodId"];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Product Page</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo.svg">
 
     <link rel="stylesheet" href="/css/output.css">
 </head>

@@ -1,7 +1,13 @@
 /* But I'm leaving it here in case @zeh-raan can fix it - I GOT TUH HOMIE */
+@import url("https://fonts.googleapis.com/css2?family=Playfair Display&family=Lato&family=Borel&display=swap");
 @import "tailwindcss";
 
 @theme {
+    /* Fonts */
+    --font-body: "Lato", sans-serif;
+    --font-heading: "Playfair Display", serif;
+    --font-cursive: "Borel", cursive;
+
     /* Navigation bar animation */
     --animate-slide-down: slide-down 0.6s ease-out forwards;
 
@@ -23,12 +29,23 @@
         from { width: 0; }
         to { width: 100%; }
     }
+
+    /* Fade-in */
+    --animate-fade-in: fade-in 1s ease forwards;
+
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
 }
 
 /* Transition for hero texts */
 @layer components {
     html {scroll-behavior: smooth}
-    body {@apply bg-gray-100;}
+    body {@apply bg-gray-100 font-body;}
+
+    h1 {@apply font-heading;}
 
     #hero h1,
     #hero h2,
@@ -52,44 +69,45 @@
         @apply font-medium hover:text-white transition-colors duration-300;
     }
 
-    /* Product Card */
-    .product-card {
-        @apply relative overflow-hidden rounded-2xl shadow-2xl transition-transform duration-500 hover:translate-y-0;
+    .nav-icons {
+        @apply p-2 rounded-full hover:bg-gray-500 transition-colors duration-300;
     }
-
-    .product-image {
-        @apply w-full h-full object-cover transition-transform duration-500;
-    }
-
-    .product-overlay {
-        @apply absolute inset-y-0 right-0 w-1/2 bg-white/70 backdrop-blur-md translate-x-full 
-        transition-transform duration-700 ease-out;
-    }
-
-    /* Overlay content */
-    .product-overlay-content {
-        @apply relative z-10 flex flex-col items-center justify-center h-full text-gray-800 p-4 text-center;
-    }
-
-    /* Button */
-    .add-to-cart-btn {
-        @apply px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-colors;
-    }
-
-    .fade-edge::before { content: ''; @apply absolute left-0 top-0 h-full w-6 bg-linear-to-l from-transparent to-white/70; }
 
     /* Icons */
     .icon {
         @apply w-6 h-6;
     }
 
-    .carousel-nav-btn {
-        @apply bg-white/30 backdrop-blur-2xl rounded-2xl shadow-2xl p-2 m-4;
+    /* Product Card */
+    .product-card {
+        @apply relative overflow-hidden rounded-2xl shadow-lg transition-transform duration-500 hover:scale-105;
     }
-
-    .slider-container {
-        @apply min-w-full grid grid-cols-3 gap-4 max-w-7xl mx-auto snap-start;
+    
+    /* Product Image */
+    .product-image {
+        @apply w-full h-full object-cover rounded-2xl transition-transform duration-500;
     }
+    
+    /* Hover Overlay */
+    .product-overlay {
+        @apply absolute inset-0 bg-black/60 opacity-0 flex flex-col justify-end p-4 text-white transition-opacity duration-300;
+    }
+    
+    .product-card:hover .product-overlay {
+        @apply opacity-100;
+    }
+    
+    .product-name {
+        @apply font-bold text-lg;
+    }
+    
+    .product-desc {
+        @apply text-sm mt-1 line-clamp-2;
+    }
+    
+    .product-link {
+        @apply mt-2 inline-block bg-white/80 text-black px-3 py-1 rounded-full hover:bg-white transition;
+    }     
 
     /* For Product Page */
     #product-images-carousel-container {
@@ -138,7 +156,7 @@
     }
 
     .buttons {
-        @apply w-full rounded-full p-2 cursor-pointer bg-black text-gray-400 hover:text-white transition-colors duration-300;
+        @apply w-full rounded-full p-2 cursor-pointer bg-black text-gray-300 hover:text-white transition-colors duration-300;
     }
 
     .border-divider {
@@ -146,7 +164,7 @@
     }
 
     /* ---------------- Checkout Page ---------------- */
-    .input-field {
+    .checkout-field {
       @apply p-2 rounded-2xl border border-gray-500 text-gray-600;
     }
 
@@ -192,6 +210,28 @@
       color: red;
       font-size: 0.8rem;
       padding-left: 0.5rem;
+    }
+
+    /* Signup/Login Page */
+
+    .input-field {
+        @apply w-full p-3 rounded-xl border border-gray-400 text-gray-700 outline-none transition-all duration-300;
+    }
+
+    .input-field:focus {
+        @apply border-gray-600;
+    }
+
+    .error-text {
+        @apply text-red-500 text-sm h-4 px-1;
+    }
+
+    .input-valid {
+        @apply border-green-500;
+    }
+
+    .input-invalid {
+        @apply border-red-500;
     }
 
     /* For delete button in cart */

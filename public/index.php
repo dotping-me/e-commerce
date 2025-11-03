@@ -11,6 +11,8 @@ $frontendRoutes = [
     "catalog" => "catalog.php",
     "checkout" => "checkout.php",
     "dashboard" => "dashboard.php"
+    "signup" => "signup.html",
+    "aboutus" => "aboutus.php",
 ];
 
 $DIR = substr(__DIR__, 0, strpos(__DIR__, "public"));

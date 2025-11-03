@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<users>
+    <user>
+        <firstName>Zehraan</firstName>
+        <lastName>Azimekhan</lastName>
+        <email>zehraan@gmail.com</email>
+        <phone>56432321</phone>
+        <password>$2y$12$0fJ.OtAJjMXoT3hmUTVQs.kY3dlWWjg1ZgXMCA9OPD/OABG3.CFn.</password>
+        <admin>1</admin>
+    </user>
+    <user>
+        <firstName>Boodhun</firstName>
+        <lastName>Abdurahman</lastName>
+        <email>boods@gmail.com</email>
+        <phone>58908756</phone>
+        <password>$2y$12$pjeBKqJTmRJuwyy5gTfcG.2tMf4AMtJaQqY520NbrjRaYdMcSHgsu</password>
+        <admin>0</admin>
+    </user>
+</users>

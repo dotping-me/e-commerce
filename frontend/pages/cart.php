@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - Cart</title>
 
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo.svg">
+
     <!-- Tailwind CLI -->
     <link href="/css/output.css" rel="stylesheet">
 </head>
 
 <body>
+
+    <!-- Navigation Bar -->
     <?php include("components/header.php"); ?>
 
     <!-- Title text -->
@@ -40,14 +47,15 @@
                 </div>
 
                 <div class="border-divider space-y-5">
-                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer active:scale-95" onclick="window.location.href = '/checkout'">Checkout</button>
-                    <button class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer active:scale-95" onclick="clearCart(); renderCart();">Clear Cart</button>
+                    <button class="buttons" onclick="window.location.href = '/checkout'">Checkout</button>
+                    <button class="buttons bg-red-700" onclick="clearCart(); renderCart();">Clear Cart</button>
                     <a href="/catalog" class="flex justify-center font-medium text-md text-blue-600 hover:underline">Continue Shopping</a>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <?php include("components/footer.php"); ?>
 
     <script src="/js/cart.js"></script>
