@@ -125,7 +125,7 @@ session_start();
                 category.querySelectorAll("product").forEach(prod => {
                     const id = prod.getAttribute("id");
                     let name = prod.getElementsByTagName("name")[0].childNodes[0].nodeValue;
-                    let price = prod.getElementsByTagName("price")[0].childNodes[0].nodeValue.slice(0, 24) + "...";
+                    let price = prod.getElementsByTagName("price")[0].childNodes[0].nodeValue;
                     let img = prod.getElementsByTagName("img")[0].childNodes[0].nodeValue;
 
                     cardsHtml += `
