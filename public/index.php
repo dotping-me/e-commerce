@@ -1,8 +1,7 @@
 <?php
 // Router setup
 
-// TODO: Block access to manually using /backend/...
-// TODO: Block access to manually using /frontend/pages/...
+// TODO: Auth protected pages
 // TODO: Clean up this file
 
 $frontendRoutes = [
@@ -11,21 +10,12 @@ $frontendRoutes = [
     "cart" => "cart.php",
     "catalog" => "catalog.php",
     "checkout" => "checkout.php",
+    "dashboard" => "dashboard.php"
     "signup" => "signup.html",
     "aboutus" => "aboutus.php",
 ];
 
 $DIR = substr(__DIR__, 0, strpos(__DIR__, "public"));
-
-// Tries to route to backend, else return a JSON containing error message
-function routeToBackend(string $path) {
-    // ...
-}
-
-// Tries to route to frontend, else redirects to an error page
-function routeToFrontend(string $path) {
-    // ...
-}
 
 function routePath(string $path) {
     global $DIR;

@@ -58,11 +58,6 @@ $prodId = $GLOBALS["prodId"];
                 
                 <label for="prodCategory" class="sr-only">Underline select</label>
                 <select id="prodCategory" name="prodCategory" class="mb-6 block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                    <option value="" hidden>Choose a Category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Fashion">Fashion</option>
-                    <option value="Perfume">Perfume</option>
-                    <option value="Others">Others</option>
                 </select>
 
                 <div class="relative z-0">
@@ -109,8 +104,32 @@ $prodId = $GLOBALS["prodId"];
 
         // Load product data on page load
         window.onload = () => {
-            loadProductData();
+            loadCategories();
+            setTimeout(() => {loadProductData();}, 100);
         };
+
+        // Load all categories
+        function loadCategories() {
+            const selectCategory = document.getElementById("prodCategory");
+            selectCategory.innerHTML = `<option value="" hidden selected>Choose a Category</option>`;
+
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = () => {
+                if ((xhr.readyState == 4) && (xhr.status == 200)) {
+
+                    const xml = xhr.responseXML;
+                    const categories = xml.getElementsByTagName("category");
+                    
+                    for (let i = 0; i < categories.length; i++) {
+                        let category = categories[i].getAttribute("name");
+                        selectCategory.innerHTML += `<option value="${category}">${category}</option>`;
+                    }
+                }
+            };
+
+            xhr.open("GET", "/api/get_all_products.php", true);
+            xhr.send();
+        }
 
         // Retrieves the product's XML
         function loadProductData() {
@@ -258,7 +277,7 @@ $prodId = $GLOBALS["prodId"];
             // Handling images
             // Converts to JSON string for easier comparison
             if (JSON.stringify(currentState.images) != JSON.stringify(initialState.images)) {
-                differencePayload.images = currentState.images;
+                differencePayload.images = currentState.images.filter(img => !initialState.images.includes(img));
             } 
 
             // Handling details
@@ -282,6 +301,7 @@ $prodId = $GLOBALS["prodId"];
             
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+                productImages.push(file.name);
                 
                 const imgWrapper = document.createElement("div");
                 imgWrapper.className = "relative inline-block m-2";
@@ -440,58 +460,84 @@ $prodId = $GLOBALS["prodId"];
             e.preventDefault();
 
             const differencePayload = compareChanges();
-            if (!differencePayload.length) {
-                modalStatusMessage.innerHTML = `<h1>No Changes</h1><p>No changes were made to the product.</p>`;
+            if (Object.keys(differencePayload).length == 0) {
+                modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-red-500">No Changes!</h1><p class="text-red-500">No changes were made to the product.</p>`;
                 showModalBtn.click();
                 return;
             }
 
             let err = validateForm();
             if (err) {
-                modalStatusMessage.innerHTML = `<h1>Error!</h1><p>${err}</p>`;
+                modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-red-500">Error!</h1><p class="text-red-500">${err}</p>`;
                 showModalBtn.click();
                 return;
             }
 
-            let payload = {
-                product_id: "<?php echo $prodId; ?>",
-                category: editProdForm.prodCategory.value,
-                name: editProdForm.prodNameInForm.value.trim(),
-                desc: editProdForm.prodDesc.value.trim(),
-                price: editProdForm.prodPrice.value,
-                details: extractDetailKeyValues(),
-            };
+            // Prepares to send
+            differencePayload.product_id = "<?php echo $prodId; ?>";
 
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "/api/edit_product.php", true);
+            xhr.open("POST", "/api/update_product.php", true);
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.onreadystatechange = () => {
                 if ((xhr.readyState == 4) && (xhr.status == 200)) {
                     let res = JSON.parse(xhr.responseText);
-                    if (res.success) {
-                        // Handle image upload if there are new images
-                        const uploadedImages = editProdForm.prodImg.files;
-                        if (uploadedImages.length > 0) {
-                            uploadImagesAjax("<?php echo $prodId; ?>");
-                        } else {
-                            modalStatusMessage.innerHTML = `<h1>Success!</h1><p>Product updated successfully!</p><a href="/product/<?php echo $prodId; ?>">View updated product</a>`;
-                            showModalBtn.click();
-                            storeInitialState(); // Update initial state after successful save
-                        }
-                    } else {
-                        modalStatusMessage.innerHTML = `<h1>Error!</h1><p>${res.error || "Failed to update product"}</p>`;
-                        showModalBtn.click();
-                    }
+
+                    // Handle image upload
+                    uploadImagesAjax("<?php echo $prodId; ?>");
                 }
             };
-            xhr.send(JSON.stringify(payload));
+            
+            xhr.send(JSON.stringify(differencePayload));
         });
 
         function uploadImagesAjax(prodId) {
             const imageUploads = editProdForm.prodImg.files;
-            const formData = new FormData();
+            const imagesToDelete = initialState.images.filter(img => !productImages.includes(img));
 
+            // Upload new images if there are none to delete
+            if (imagesToDelete.length == 0) {
+                uploadNewImages(prodId, imageUploads);
+                return;
+            }
+
+            // Else
+            // Delete images first, then upload new ones
+            const deletePayload = {
+                prodId: prodId,
+                imagesToDelete: imagesToDelete
+            };
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/delete_image.php", true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onreadystatechange = () => {
+
+                // Proceed with uploading new images
+                if ((xhr.readyState == 4) && (xhr.status == 200)) {
+                    let imagesToAdd = [...productImages.filter(img => !initialState.images.includes(img))];
+                    uploadNewImages(prodId, imagesToAdd);
+                }
+
+            };
+
+            xhr.send(JSON.stringify(deletePayload));
+        }
+
+        function uploadNewImages(prodId, imageUploads) {
+
+            // This happens when images were just deleted and no new were added
+            if (imageUploads.length === 0) {
+                modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-green-600">Success!</h1><p class="mb-4 text-green-600">Product updated successfully!</p><a href="/product/${prodId}" class="font-medium text-md text-blue-600 hover:underline">See product here!</a>`;
+                showModalBtn.click();
+                
+                loadProductData();
+                return;
+            }
+
+            const formData = new FormData();
             formData.append("prodId", prodId);
+
             for (let i = 0; i < imageUploads.length; i++) {
                 formData.append("images[]", imageUploads[i]);
             }
@@ -501,11 +547,14 @@ $prodId = $GLOBALS["prodId"];
             xhr.onreadystatechange = () => {
                 if ((xhr.readyState == 4) && (xhr.status == 200)) {
                     let res = JSON.parse(xhr.responseText);
-                    modalStatusMessage.innerHTML = `<h1>Success!</h1><p>Product and images updated successfully!</p><a href="/product/<?php echo $prodId; ?>">View updated product</a>`;
+                    
+                    modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-green-600">Success!</h1><p class="mb-4 text-green-600">Product updated successfully!</p><a href="/product/${prodId}" class="font-medium text-md text-blue-600 hover:underline">See product here!</a>`;
                     showModalBtn.click();
-                    storeInitialState(); // Update initial state after successful save
+
+                    loadProductData(); // Reloads form with updated data
                 }
             };
+            
             xhr.send(formData);
         }
     </script>

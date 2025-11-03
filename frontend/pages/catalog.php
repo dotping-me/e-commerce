@@ -13,8 +13,6 @@ session_start();
     <link href="/css/output.css" rel="stylesheet">
 </head>
 <body>
-    
-    <!-- Navigation Bar -->
     <?php include("components/header.php"); ?>
 
     <form class="relative p-10 w-full mt-20" method="GET" action="/catalog">
