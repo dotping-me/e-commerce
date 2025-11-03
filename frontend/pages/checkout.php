@@ -1,5 +1,26 @@
 <?php
 session_start();
+
+$firstName = $lastName = $phone = $email = '';
+
+if (isset($_SESSION['user'])) {
+    $xmlFile = __DIR__ . "/../../backend/data/users.xml";
+
+    if (file_exists($xmlFile)) {
+        $xml = simplexml_load_file($xmlFile);
+
+        // Find the matching user by email
+        foreach ($xml->user as $u) {
+            if ((string)$u->email === $_SESSION['user']['email']) {
+                $firstName = (string)$u->firstName;
+                $lastName  = (string)$u->lastName;
+                $phone     = (string)$u->phone;
+                $email     = (string)$u->email;
+                break;
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,17 +37,17 @@ session_start();
   <?php include("components/header.php"); ?>
 
   <!-- Heading -->
-  <div class="m-10 mb-0 mt-20">
+  <div class="mt-20 mx-4 md:mx-10 mb-0">
     <h1 class="w-full font-bold p-4 text-2xl">Checkout</h1>
   </div>
 
-  <section class="section-layout mt-0">
+  <section class="section-layout mt-0 flex flex-col md:flex-row gap-4">
     <!-- CONTACT FORM -->
-    <div class="section-content">
+    <div class="section-content w-full md:w-2/3">
       <p class="py-4 text-gray-600 font-bold">Contact Information</p>
 
-      <form id="checkout-form" class="space-y-6">
-        <div class="grid grid-cols-2 gap-4">
+    <form id="checkout-form" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- First Name -->
           <div class="flex flex-col">
             <label class="label-field">FIRST NAME</label>
@@ -50,28 +71,30 @@ session_start();
             <label class="label-field">EMAIL</label>
             <input id="email" name="email" type="text" class="checkout-field" placeholder="xxxxxxx@gmail.com" />
           </div>
-        </div>
-      </form>
+      </div>
+    </form>
 
       <!-- DELIVERY METHOD -->
       <p class="p-4 text-gray-600 font-bold">Delivery Method</p>
-      <div class="flex gap-4">
+      <div class="flex flex-col md:flex-row gap-4">
         <button id="store-btn" type="button" 
-            class="flex items-center gap-2 bg-gray-200 border border-gray-500 p-3 rounded-2xl hover:bg-gray-300 transition-colors duration-300;">
+            class="flex items-center gap-2 bg-gray-200 border border-gray-500 p-3 rounded-2xl hover:bg-gray-300 transition-colors duration-300 w-full md:w-auto">
           <img class="icon" src="/assets/icons/store.svg" alt="Store" /> Store Pickup
         </button>
       </div>
 
       <!-- Hidden Store Pickup Form -->
       <form id="store-form" class="hidden mt-6 space-y-4">
-        <div class="flex flex-col">
-          <label class="label-field">PICKUP DATE</label>
-          <input name="pickupDate" type="date" class="checkout-field" />
-        </div>
+        <div class="flex flex-col md:flex-row md:gap-4">
+          <div class="flex flex-col w-full">
+            <label class="label-field">PICKUP DATE</label>
+            <input name="pickupDate" type="date" class="checkout-field" />
+          </div>
 
-        <div class="flex flex-col">
-          <label class="label-field">PICKUP TIME</label>
-          <input name="pickupTime" type="time" class="checkout-field" />
+          <div class="flex flex-col w-full">
+            <label class="label-field">PICKUP TIME</label>
+            <input name="pickupTime" type="time" class="checkout-field" />
+          </div>
         </div>
 
         <div class="flex flex-col">
@@ -82,7 +105,7 @@ session_start();
     </div>
 
     <!-- REVIEW CART -->
-    <aside class="aside-layout">
+    <aside class="aside-layout w-full md:w-1/3 mt-6 md:mt-0">
       <div class="flex items-center justify-between p-4 cursor-pointer hover:text-gray-500 transition-colors duration-300" id="toggle-cart">
         <p class="font-bold pr-2">Review your cart</p>
         <img id="cart-arrow" class="icon transition-transform duration-300" src="/assets/icons/right.svg">
@@ -97,6 +120,7 @@ session_start();
     <div id="popup">Checkout complete!</div>
   </section>
 
+  <!-- Footer -->
   <?php include("components/footer.php"); ?>
 
   <script src="/js/cart.js"></script>  

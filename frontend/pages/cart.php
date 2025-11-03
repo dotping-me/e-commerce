@@ -20,39 +20,42 @@ session_start();
     <?php include("components/header.php"); ?>
 
     <!-- Title text -->
-    <div class="m-10 mb-0 mt-20">        
+    <div class="mt-20 mx-4 md:mx-10 mb-0">        
         <h1 class="w-full font-bold pl-4 pt-8 text-2xl">Shopping Cart</h1>
         <p id="cart-count" class="pl-4 pb-8 text-gray-600"></p>
     </div>
 
-    <section class="section-layout mt-0">
+    <section class="section-layout mt-0 flex flex-col md:flex-row gap-6 md:gap-8 mx-4 md:mx-10">
+
+        <!-- Cart Items -->
         <div class="flex-1 bg-white rounded-2xl shadow-xl p-6">
             
             <!-- Column names -->
-            <div class="grid grid-cols-[2fr_1fr_1fr_auto] items-center font-bold border-b-2 border-gray-200 pb-2">
+            <div class="grid grid-cols-[2fr_1fr_1fr_auto] items-center font-bold border-b-2 border-gray-200 pb-2 text-sm md:text-base">
                 <p>Product</p>
-                <p class="text-center">Price</p>
-                <p class="text-center">Quantity</p>
-                <p class="text-right pr-4">Delete</p>
+                <p class="text-center md:text-base text-xs">Price</p>
+                <p class="text-center md:text-base text-xs">Quantity</p>
+                <p class="text-right  md:text-base text-xs pr-4">Delete</p>
             </div>
             
             <div id="cart-products" class="flex flex-col gap-4 mt-4"></div>
         </div>
 
         <!-- Summary -->
-        <div class="bg-white w-64 p-6 rounded-2xl border border-gray-200 shadow-sm h-fit">
+        <div class="bg-white w-full md:w-64 p-6 rounded-2xl border border-gray-200 shadow-sm h-fit">
             <div class="space-y-4">
                 <div class="font-semibold text-lg">
                     <p>Total: MUR <span id="total-price">0</span></p>
                 </div>
 
                 <div class="border-divider space-y-5">
-                    <button class="buttons" onclick="window.location.href = '/checkout'">Checkout</button>
-                    <button class="buttons bg-red-700" onclick="clearCart(); renderCart();">Clear Cart</button>
+                    <button class="buttons w-full" onclick="window.location.href = '/checkout'">Checkout</button>
+                    <button class="buttons bg-red-700 w-full" onclick="clearCart(); renderCart();">Clear Cart</button>
                     <a href="/catalog" class="flex justify-center font-medium text-md text-blue-600 hover:underline">Continue Shopping</a>
                 </div>
             </div>
         </div>
+
     </section>
 
     <!-- Footer -->
