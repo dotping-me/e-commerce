@@ -53,7 +53,7 @@ session_start();
         </h1>
 
         <!-- Paragraph -->
-        <p class="flex justify-center items-center text-base sm:text-lg md:text-xl">
+        <p class="flex justify-center items-center text-base sm:text-lg md:text-lg">
             "Where every click brings you closer to what you love — curated collections,
             seamless shopping, and a touch of inspiration in every product."
         </p>

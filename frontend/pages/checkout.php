@@ -1,5 +1,26 @@
 <?php
 session_start();
+
+$firstName = $lastName = $phone = $email = '';
+
+if (isset($_SESSION['user'])) {
+    $xmlFile = __DIR__ . "/../../backend/data/users.xml";
+
+    if (file_exists($xmlFile)) {
+        $xml = simplexml_load_file($xmlFile);
+
+        // Find the matching user by email
+        foreach ($xml->user as $u) {
+            if ((string)$u->email === $_SESSION['user']['email']) {
+                $firstName = (string)$u->firstName;
+                $lastName  = (string)$u->lastName;
+                $phone     = (string)$u->phone;
+                $email     = (string)$u->email;
+                break;
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,33 +49,37 @@ session_start();
     <div class="section-content w-full md:w-2/3">
       <p class="py-4 text-gray-600 font-bold">Contact Information</p>
 
-      <form id="checkout-form" class="space-y-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form id="checkout-form" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- First Name -->
           <div class="flex flex-col">
-            <label class="label-field">FIRST NAME</label>
-            <input name="firstName" type="text" class="checkout-field" placeholder="Enter First Name" />
+              <label class="label-field">FIRST NAME</label>
+              <input name="firstName" type="text" class="checkout-field" placeholder="Enter First Name" 
+                    value="<?= $firstName ?>" />
           </div>
 
           <!-- Last Name -->
           <div class="flex flex-col">
-            <label class="label-field">LAST NAME</label>
-            <input name="lastName" type="text" class="checkout-field" placeholder="Enter Last Name" />
+              <label class="label-field">LAST NAME</label>
+              <input name="lastName" type="text" class="checkout-field" placeholder="Enter Last Name" 
+                    value="<?= $lastName ?>" />
           </div>
 
           <!-- Phone -->
           <div class="flex flex-col">
-            <label class="label-field">PHONE</label>
-            <input name="phone" type="text" class="checkout-field" placeholder="5xxxxxxx" />
+              <label class="label-field">PHONE</label>
+              <input name="phone" type="text" class="checkout-field" placeholder="5xxxxxxx" 
+                    value="<?= $phone ?>" />
           </div>
 
           <!-- Email -->
           <div class="flex flex-col">
-            <label class="label-field">EMAIL</label>
-            <input name="email" type="text" class="checkout-field" placeholder="xxxxxxx@gmail.com" />
+              <label class="label-field">EMAIL</label>
+              <input name="email" type="text" class="checkout-field" placeholder="xxxxxxx@gmail.com" 
+                    value="<?= $email ?>" />
           </div>
-        </div>
-      </form>
+      </div>
+    </form>
 
       <!-- DELIVERY METHOD -->
       <p class="p-4 text-gray-600 font-bold">Delivery Method</p>
@@ -102,6 +127,7 @@ session_start();
     <div id="popup">Checkout complete!</div>
   </section>
 
+  <!-- Footer -->
   <?php include("components/footer.php"); ?>
 
   <script src="/js/cart.js"></script>  
