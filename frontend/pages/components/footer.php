@@ -45,7 +45,7 @@
     </div>
 
     <!-- Footer Bottom -->
-    <div class="mt-2 py-2 border-t border-black text-center text-gray-500 text-sm">
+    <div class="mt-6 py-4 border-t border-white/20 text-center text-gray-500 text-sm">
         &copy; 2025 Shop. All rights reserved.
     </div>
 </footer>

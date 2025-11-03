@@ -1,5 +1,10 @@
 <?php
-// session_start();
+session_start();
+if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "1")) {
+    header("Location:/");
+    exit();
+}
+
 $prodId = $GLOBALS["prodId"];
 ?>
 
@@ -475,6 +480,7 @@ $prodId = $GLOBALS["prodId"];
 
             // Prepares to send
             differencePayload.product_id = "<?php echo $prodId; ?>";
+            differencePayload.images = productImages;
 
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "/api/update_product.php", true);
@@ -497,7 +503,7 @@ $prodId = $GLOBALS["prodId"];
 
             // Upload new images if there are none to delete
             if (imagesToDelete.length == 0) {
-                uploadNewImages(prodId, imageUploads);
+                uploadNewImages(prodId);
                 return;
             }
 
@@ -515,8 +521,7 @@ $prodId = $GLOBALS["prodId"];
 
                 // Proceed with uploading new images
                 if ((xhr.readyState == 4) && (xhr.status == 200)) {
-                    let imagesToAdd = [...productImages.filter(img => !initialState.images.includes(img))];
-                    uploadNewImages(prodId, imagesToAdd);
+                    uploadNewImages(prodId);
                 }
 
             };
@@ -524,7 +529,8 @@ $prodId = $GLOBALS["prodId"];
             xhr.send(JSON.stringify(deletePayload));
         }
 
-        function uploadNewImages(prodId, imageUploads) {
+        function uploadNewImages(prodId) {
+            const imageUploads = editProdForm.prodImg.files;
 
             // This happens when images were just deleted and no new were added
             if (imageUploads.length === 0) {
