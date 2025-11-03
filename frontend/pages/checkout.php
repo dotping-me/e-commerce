@@ -228,6 +228,8 @@ session_start();
                     $("#checkout-form").reset();
                     $("#store-form").reset();
                     $("#store-form").classList.add("hidden");
+
+                    clearCart();
                 }
             };
             
