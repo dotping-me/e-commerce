@@ -63,7 +63,8 @@ if (isset($data["price"])) {
 
 // Handles category changes (Moving product to another category)
 if (isset($data["category"]) && (string)$currentCategory["name"] !== $data["category"]) {
-    // Find new category
+
+    // Finding what category to move product to
     $newCategory = null;
     foreach ($xml->children() as $category) {
         if ((string)$category["name"] === $data["category"]) {
@@ -71,64 +72,64 @@ if (isset($data["category"]) && (string)$currentCategory["name"] !== $data["cate
             break;
         }
     }
-    
+
+    // Moving to new category
     if ($newCategory) {
-        // Remove from old category using DOM
+
+        // Removing product from initial category
         $dom = dom_import_simplexml($prodFound);
         $dom->parentNode->removeChild($dom);
         
-        // Add to new category
-        $newProduct = $newCategory->addChild('product');
-        $newProduct->addAttribute('id', $prodId);
-        $newProduct->addChild('name', (string)$prodFound->name);
-        $newProduct->addChild('desc', (string)$prodFound->desc);
-        $newProduct->addChild('price', (string)$prodFound->price);
+        // Moving to new category
+        $newProduct = $newCategory->addChild("product");
+        $newProduct->addAttribute("id", $prodId);
+        $newProduct->addChild("name", (string)$prodFound->name);
+        $newProduct->addChild("desc", (string)$prodFound->desc);
+        $newProduct->addChild("price", (string)$prodFound->price);
         
-        // Copy details if they exist
         if ($prodFound->details) {
-            $newDetails = $newProduct->addChild('details');
+            $newDetails = $newProduct->addChild("details");
             foreach ($prodFound->details->dt as $detail) {
-                $newDetail = $newDetails->addChild('dt', (string)$detail);
-                $newDetail->addAttribute('name', (string)$detail['name']);
+                $newDetail = $newDetails->addChild("dt", (string)$detail);
+                $newDetail->addAttribute("name", (string)$detail["name"]);
             }
         }
         
-        // Copy images if they exist
         if ($prodFound->images) {
-            $newImages = $newProduct->addChild('images');
+            $newImages = $newProduct->addChild("images");
             foreach ($prodFound->images->img as $image) {
-                $newImages->addChild('img', (string)$image);
+                $newImages->addChild("img", (string)$image);
             }
         }
         
         $prodFound = $newProduct;
+
     } else {
         http_response_code(400);
-        echo json_encode(["error" => "New category not found"]);
+        echo json_encode(["error" => "Category not found"]);
         exit;
     }
 }
 
 // Handles details changes - unset and repopulate
 if (isset($data["details"]) && is_array($data["details"])) {
-    // Remove existing details
     if (isset($prodFound->details)) {
         unset($prodFound->details);
     }
     
-    // Add new details if there are any
+    // Overwrites details
     if (!empty($data["details"])) {
-        $details = $prodFound->addChild('details');
+        $details = $prodFound->addChild("details");
         foreach ($data["details"] as $detailObj) {
-            if (isset($detailObj['name']) && isset($detailObj['value'])) {
-                $dt = $details->addChild('dt', htmlspecialchars(trim($detailObj['value'])));
-                $dt->addAttribute('name', htmlspecialchars(trim($detailObj['name'])));
+            if (isset($detailObj["name"]) && isset($detailObj["value"])) {
+                $dt = $details->addChild("dt", htmlspecialchars(trim($detailObj["value"])));
+                $dt->addAttribute("name", htmlspecialchars(trim($detailObj["name"])));
             }
         }
     }
 }
 
-// Save XML
+// Saves XML
 if ($xml->asXML($filepath)) {
     http_response_code(200);
     echo json_encode(["message" => "Product updated successfully"]);

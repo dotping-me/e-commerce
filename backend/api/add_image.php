@@ -24,7 +24,7 @@ foreach ($_FILES["images"]["name"] as $index => $name) {
     // ...
 
     // Generating a unique filename for the new image
-    $fname = uniqid("prod_{$prodId}_", true) . '.jpg';
+    $fname = uniqid("img_{$prodId}_", true) . '.jpg';
     $fpath = $imageDirPath . "/" . $fname;
 
     // Stores file
@@ -41,7 +41,16 @@ $xml = simplexml_load_file($xmlFpath);
 foreach ($xml->children() as $category) {
     foreach ($category->children() as $prod) {
         if ((string)$prod["id"] == $prodId) {
-            $prodXmlImages = $prod->addChild("images");
+
+            // This file is used when updating images for a product as well
+            // So products might already have an <images> tag so no need to
+            // make a new one
+            
+            if (!isset($prod->images)) {
+                $prodXmlImages = $prod->addChild("images");
+            } else {
+                $prodXmlImages = $prod->images;
+            }
 
             foreach ($uploadedImageNames as $imgName) {
                 $prodXmlImages->addChild("img", $imgName);
