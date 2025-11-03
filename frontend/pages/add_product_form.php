@@ -1,11 +1,9 @@
 <?php
 session_start();
-
-/*
-if (!isset($_SESSION["username"])) {
-    header("Location: /");
+if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "1")) {
+    header("Location:/");
+    exit();
 }
-*/
 
 // NOTE: "prodName" was changed to "prodNameInForm" because it conflicts
 //       with "prodName" in search bar (in header)

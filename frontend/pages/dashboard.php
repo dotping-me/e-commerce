@@ -1,3 +1,11 @@
+<?php
+session_start();
+if ((!isset($_SESSION["user"]["isAdmin"])) || ($_SESSION["user"]["isAdmin"] != "1")) {
+    header("Location:/");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +42,7 @@
         </div>
     </div>
 
-    <section class="flex gap-2 p-4 mt-20 w-full mx-auto">
+    <section class="flex gap-2 p-4 mt-20 mb-8 w-full mx-auto">
 
         <!-- Navigation (1/4 of width) -->
         <div class="bg-white w-64 p-4 rounded-2xl border border-gray-200 shadow-sm">
@@ -67,7 +75,16 @@
             <div id="users" class="mb-8">
                 <h1 class="text-2xl font-bold text-gray-900 mb-6 pb-2 border-b-2 border-gray-200">Users</h1>
                 <table id="users-table" class="w-full border-collapse">
+                    <thead>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </thead>
+
+                    <tbody id="users-table-body">
                     <!-- Populated with JS -->
+                    </tbody>
                 </table>
             </div>
 
@@ -127,13 +144,17 @@
 
     <script>
         const addCategoryForm = document.forms.addCategoryForm;
+
+        const usersTable = document.getElementById("users-table-body");
         const categoriesTable = document.getElementById("categories-table-body");
         const productsTable = document.getElementById("products-table-body");
+        
         const showModalBtn = document.getElementById("toggle-modal-btn");
         const modalStatusMessage = document.getElementById("status-message");
 
         window.onload = () => {
             loadProducts();
+            loadUsers();
         };
 
         // Populating Categories and Products tables
@@ -281,6 +302,71 @@
                     // Deletes the row
                     let row = document.getElementsByClassName(prodId)[0];
                     productsTable.removeChild(row);
+                }
+            };
+            
+            xhr.send(JSON.stringify(payload));
+        }
+
+        // User
+        function loadUsers() {
+            usersTable.innerHTML = "";
+
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = () => {
+                if ((xhr.readyState == 4) && (xhr.status == 200)) {
+
+                    // Fills in table
+                    const xml = xhr.responseXML;
+                    const users = xml.getElementsByTagName("user");
+                    
+                    for (let i = 0; i < users.length; i++) {
+                        let email = users[i].getElementsByTagName("email")[0].childNodes[0].nodeValue;
+                        let fullname = users[i].getElementsByTagName("lastName")[0].childNodes[0].nodeValue + " " + users[i].getElementsByTagName("firstName")[0].childNodes[0].nodeValue;
+                        
+                        let admin = "Normal";
+                        if (users[i].getElementsByTagName("admin")[0].childNodes[0].nodeValue == "1") {
+                            admin = "Admin";
+                        }
+
+                        const row = document.createElement("tr");
+                        row.className = `user-${email}`;
+                        row.innerHTML = `
+                            <td>${email}</td>
+                            <td>${fullname}</td>
+                            <td>${admin}</td>
+                            <td class="flex items-center gap-1">
+                                <button class="edit-btn" onclick="changeRole('${email}', '1')">Promote</button>
+                                <button class="delete-btn" onclick="changeRole('${email}', '0')">Demote</button>
+                            </td>
+                        `;
+
+                        usersTable.appendChild(row);
+                    }
+                }
+            };
+
+            xhr.open("GET", "/api/get_all_users.php", true);
+            xhr.send();
+        }
+
+        function changeRole(email, role) {
+            const payload = {
+                email: email,
+                admin: role
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/update_user_role.php", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    let res = JSON.parse(xhr.responseText);
+
+                    modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-green-600">Success!</h1><p class="mb-4 text-green-600">${res.message || res.error}</p>`;
+                    showModalBtn.click();
+
+                    loadUsers(); // Reload users
                 }
             };
             

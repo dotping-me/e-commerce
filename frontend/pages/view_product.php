@@ -1,5 +1,6 @@
 <?php
 session_start();
+$prodId = $GLOBALS["prodId"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,8 +47,8 @@ session_start();
                     <button id="remove-from-cart-btn" class="hidden flex-1 w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer active:scale-95">Remove from Cart</button>
 
                     <?php
-                    if (isset($_SESSION["username"])) { // Also add "if user is an admin
-                        echo '<button id="add-to-cart-btn" class="flex-1 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer active:scale-95">Edit</button>';
+                    if (isset($_SESSION["user"]["isAdmin"]) && $_SESSION["user"]["isAdmin"] == "1") { // Also add "if user is an admin
+                        echo '<button onclick="window.location.href=' . "'/product/$prodId/edit'" . '" id="add-to-cart-btn" class="flex-1 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer active:scale-95">Edit</button>';
                     }
                     ?>
                 </div>
