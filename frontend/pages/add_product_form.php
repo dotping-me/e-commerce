@@ -72,11 +72,6 @@ if (!isset($_SESSION["username"])) {
                 <!-- This code snippet is taken from https://flowbite.com/docs/forms/floating-label/ and iterated over -->
                 <label for="prodCategory" class="sr-only">Underline select</label>
                 <select id="prodCategory" name="prodCategory" class="mb-6 block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                    <option value="" hidden selected>Choose a Category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Fashion">Fashion</option>
-                    <option value="Perfume">Perfume</option>
-                    <option value="Others">Others</option>
                 </select>
 
                 <div class="relative z-0">
@@ -359,7 +354,7 @@ if (!isset($_SESSION["username"])) {
             if (err) {
                 
                 // Show modal
-                modalStatusMessage.innerHTML = `<h1>Error!</h1><p>${err}</p>`;
+                modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-red-600">Error!</h1><p class="mb-4 text-red-500">${err}</p>`;
                 showModalBtn.click();
 
                 return;
@@ -413,13 +408,40 @@ if (!isset($_SESSION["username"])) {
                     // Product successfully added
                     // Thus, show modal
 
-                    modalStatusMessage.innerHTML = `<h1>Product added successfully!</h1><a href="/product/${res.product_id}">See new product here!</a>`;
+                    modalStatusMessage.innerHTML = `<h1 class="font-bold text-lg text-green-600">Success!</h1><p class="mb-4 text-green-600">Product added successfully!</p><a href="/product/${prodId}" class="font-medium text-md text-blue-600 hover:underline">See product here!</a>`;
                     showModalBtn.click();
                 }
             };
 
             xhr.send(formData);
         }
+
+        // Load all categories
+        function loadCategories() {
+            const selectCategory = document.getElementById("prodCategory");
+            selectCategory.innerHTML = `<option value="" hidden selected>Choose a Category</option>`;
+
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = () => {
+                if ((xhr.readyState == 4) && (xhr.status == 200)) {
+
+                    const xml = xhr.responseXML;
+                    const categories = xml.getElementsByTagName("category");
+                    
+                    for (let i = 0; i < categories.length; i++) {
+                        let category = categories[i].getAttribute("name");
+                        selectCategory.innerHTML += `<option value="${category}">${category}</option>`;
+                    }
+                }
+            };
+
+            xhr.open("GET", "/api/get_all_products.php", true);
+            xhr.send();
+        }
+
+        window.onload = () => {
+            loadCategories();
+        };
     </script>
 </body>
 </html>

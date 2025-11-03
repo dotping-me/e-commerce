@@ -7,8 +7,12 @@ header("Content-Type: application/json; charset=utf-8");
 $json = file_get_contents("php://input");
 $data = json_decode($json, true);
 
-// Validate again
-// TODO: Write better validation later
+// Validate JSON
+if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(400);
+    echo json_encode(["error" => "Invalid JSON payload"]);
+    exit;
+}
 
 if (!isset($data["product_id"]) || empty(trim($data["product_id"]))) {
     http_response_code(400);
@@ -24,15 +28,14 @@ $xml = simplexml_load_file($filepath);
 $prodId = trim($data["product_id"]);
 $categoryFound = false;
 $prodFound = false;
+$currentCategory = null;
 
 foreach ($xml->children() as $category) {
     foreach ($category->children() as $p) {
         if ((string)$p["id"] === $prodId) {
-            
-            // Found the product to make changes to
             $prodFound = $p;
-            $categoryFound = $category;
-
+            $currentCategory = $category;
+            $categoryFound = true;
             break 2;
         }
     }
@@ -59,14 +62,80 @@ if (isset($data["price"])) {
 }
 
 // Handles category changes (Moving product to another category)
-// ...
+if (isset($data["category"]) && (string)$currentCategory["name"] !== $data["category"]) {
 
-// Handles details changes (Iterative process)
-// ...
+    // Finding what category to move product to
+    $newCategory = null;
+    foreach ($xml->children() as $category) {
+        if ((string)$category["name"] === $data["category"]) {
+            $newCategory = $category;
+            break;
+        }
+    }
 
-// Image updates are handled by another endpoint
+    // Moving to new category
+    if ($newCategory) {
 
-// Or we can just have gone the lazy way:
-// - Delete the product
-// - Add it again with the same ID
+        // Removing product from initial category
+        $dom = dom_import_simplexml($prodFound);
+        $dom->parentNode->removeChild($dom);
+        
+        // Moving to new category
+        $newProduct = $newCategory->addChild("product");
+        $newProduct->addAttribute("id", $prodId);
+        $newProduct->addChild("name", (string)$prodFound->name);
+        $newProduct->addChild("desc", (string)$prodFound->desc);
+        $newProduct->addChild("price", (string)$prodFound->price);
+        
+        if ($prodFound->details) {
+            $newDetails = $newProduct->addChild("details");
+            foreach ($prodFound->details->dt as $detail) {
+                $newDetail = $newDetails->addChild("dt", (string)$detail);
+                $newDetail->addAttribute("name", (string)$detail["name"]);
+            }
+        }
+        
+        if ($prodFound->images) {
+            $newImages = $newProduct->addChild("images");
+            foreach ($prodFound->images->img as $image) {
+                $newImages->addChild("img", (string)$image);
+            }
+        }
+        
+        $prodFound = $newProduct;
+
+    } else {
+        http_response_code(400);
+        echo json_encode(["error" => "Category not found"]);
+        exit;
+    }
+}
+
+// Handles details changes - unset and repopulate
+if (isset($data["details"]) && is_array($data["details"])) {
+    if (isset($prodFound->details)) {
+        unset($prodFound->details);
+    }
+    
+    // Overwrites details
+    if (!empty($data["details"])) {
+        $details = $prodFound->addChild("details");
+        foreach ($data["details"] as $detailObj) {
+            if (isset($detailObj["name"]) && isset($detailObj["value"])) {
+                $dt = $details->addChild("dt", htmlspecialchars(trim($detailObj["value"])));
+                $dt->addAttribute("name", htmlspecialchars(trim($detailObj["name"])));
+            }
+        }
+    }
+}
+
+// Saves XML
+if ($xml->asXML($filepath)) {
+    http_response_code(200);
+    echo json_encode(["message" => "Product updated successfully"]);
+    exit;
+}
+
+http_response_code(500);
+echo json_encode(["error" => "Failed to update product"]);
 ?>

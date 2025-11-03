@@ -13,8 +13,6 @@ session_start();
     <link href="/css/output.css" rel="stylesheet">
 </head>
 <body>
-    
-    <!-- Navigation Bar -->
     <?php include("components/header.php"); ?>
 
     <!-- Search Bar -->
