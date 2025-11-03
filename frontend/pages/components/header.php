@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <header class="fixed top-0 left-0 w-full z-50 shadow-2xl rounded-b-2xl backdrop-blur-md bg-white/30 
     hover:bg-gray-700 hover:text-gray-200 transition-colors duration-300 animate-slide-down">
     <nav class="max-w-7xl mx-auto px-4">

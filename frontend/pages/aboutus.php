@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // File path
 $PATHProd = __DIR__ . "/../../backend/data/products.xml";
 $PATHUsr  = __DIR__ . "/../../backend/data/users.xml";
@@ -31,8 +33,6 @@ $totalUsers = count($usersXML->user);
     
 </head>
 <body>
-    
-    <!-- Navigation Bar -->
     <?php include("components/header.php"); ?>
 
     <section class="section-layout">

@@ -43,7 +43,7 @@ session_start();
     </section>
     
     <!-- About Us Quote -->
-    <section class="bg-black relative h-90 grid grid-cols-2 gap-4 text-gray-200">
+    <section class="mt-8 mb-24 bg-black relative h-90 grid grid-cols-2 gap-4 text-gray-200">
         <!-- Border -->
         <img class="absolute top-0" src="/assets/icons/border2.svg">
 
@@ -55,36 +55,6 @@ session_start();
         <img class="absolute bottom-0 rotate-180" src="/assets/icons/border2.svg">
     </section>
 
-    <!-- Just for testing
-    <form id="deleteForm" action="/api/delete_product.php" method="POST">
-        <input class="border-2 border-black" type="text" name="productId" id="productId">
-    </form>
-    <script>
-        document.getElementById('deleteForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const productId = document.getElementById('productId').value;
-            const payload = {
-                product_id: productId
-            };
-            
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/delete_product.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    console.log('Success:', response);
-                    alert(response.message || response.error);
-                }
-            };
-            
-            xhr.send(JSON.stringify(payload));
-        });
-    </script>
-    -->
-
-    <!-- Footer -->
     <?php include("components/footer.php"); ?>
 
     <script>
