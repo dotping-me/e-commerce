@@ -6,16 +6,13 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Shop - Checkout</title>
-
     <link rel="icon" type="image/svg+xml" href="/assets/icons/logo.svg">
 
-    <!-- Tailwind CLI -->
     <link href="/css/output.css" rel="stylesheet">
 </head>
 <body>
-    
-  <!-- Navigation Bar -->
   <?php include("components/header.php"); ?>
 
   <!-- Heading -->
@@ -213,6 +210,7 @@ session_start();
         const storeVisible = !$("#store-form").classList.contains("hidden");
         const validStore = storeVisible ? validateForm($("#store-form")) : true;
 
+        // Checkout went through
         if (validContact && validStore) {
           showPopup("Checkout complete! Thank you for your order.");
           $("#checkout-form").reset();

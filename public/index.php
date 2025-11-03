@@ -16,9 +16,11 @@ $frontendRoutes = [
 ];
 
 $DIR = substr(__DIR__, 0, strpos(__DIR__, "public"));
+$errorPage = $DIR . "/frontend/pages/error.php";
 
 function routePath(string $path) {
     global $DIR;
+    global $errorPage;
     global $frontendRoutes;
 
     // Set up API routes (i.e. api/product/1234)
@@ -60,6 +62,7 @@ function routePath(string $path) {
             
             readfile($staticFile);
             return;
+
         } else {
             http_response_code(404);
             echo json_encode(["error" => "Static file not found: " . $path]);
@@ -76,9 +79,7 @@ function routePath(string $path) {
         $frontendFilepath = $DIR . "/frontend/pages/edit_product_form.php";
 
         if (!(file_exists($frontendFilepath) && is_file($frontendFilepath))) {
-            http_response_code(404);
-            header("Content-Type: application/json");
-            echo json_encode([ "error" => "Edit Product Page does not exist!" ]);
+            include($errorPage);
             return;
         }
 
@@ -106,17 +107,13 @@ function routePath(string $path) {
 
     // Other frontend files
     if (!isset($frontendRoutes[$path])) {
-        http_response_code(404);
-        header("Content-Type: application/json");
-        echo json_encode([ "error" => $path ]);
+        include($errorPage);
         return;
     }
 
     $frontendFilepath = $DIR . "/frontend/pages/" . $frontendRoutes[$path];
     if (!(file_exists($frontendFilepath) && is_file($frontendFilepath))) {
-        http_response_code(404);
-        header("Content-Type: application/json");
-        echo json_encode([ "error" => "File does not exist!" ]);
+        include($errorPage);
         return;
     }
 
@@ -127,9 +124,7 @@ function routePath(string $path) {
     }
 
     // Code below runs if all else fails
-    http_response_code(404);
-    $errorFilepath = $DIR . "/frontend/pages/error.php";
-    include($errorFilepath);
+    include($errorPage);
 }
 
 // Main function 👇
