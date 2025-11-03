@@ -17,6 +17,7 @@ session_start();
     <!-- Navigation Bar -->
     <?php include("components/header.php"); ?>
 
+    <!-- Search Bar -->
     <form class="relative p-10 w-full mt-20" method="GET" action="/catalog">
         <input
         type="text"

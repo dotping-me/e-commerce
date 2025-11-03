@@ -1,16 +1,16 @@
 <footer class="bg-gray-700 text-gray-200 pt-6 rounded-t-2xl shadow-2xl">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
 
         <!-- Shop Info -->
-        <div>
-            <h2 class="text-xl font-bold mb-4">Shop.</h2>
-            <p class="text-sm text-gray-400">
+        <div class="text-center sm:text-left">
+            <h2 class="text-xl sm:text-xl md:text-xl font-bold mb-4">Shop.</h2>
+            <p class="text-sm sm:text-sm md:text-sm text-gray-400">
                 Quality products crafted with care. Bringing elegance and style to your home.
             </p>
         </div>
 
         <!-- Quick Links -->
-        <div>
+        <div class="text-center sm:text-left">
             <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
             <ul class="space-y-2 text-gray-400">
                 <li><a href="/" class="links">Home</a></li>
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Customer Service -->
-        <div>
+        <div class="text-center sm:text-left">
             <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
             <ul class="space-y-2 text-gray-400">
                 <li><a href="/checkout" class="links">Checkout</a></li>
@@ -28,9 +28,9 @@
         </div>
 
         <!-- Social Media -->
-        <div>
+        <div class="text-center sm:text-left">
             <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
-            <div class="flex space-x-4">
+            <div class="flex justify-center sm:justify-start space-x-4">
                 <a href="#" class="links">
                     <img src="/assets/icons/facebook.svg" class="icon">
                 </a>
