@@ -27,6 +27,7 @@
 
 /* Transition for hero texts */
 @layer components {
+    html {scroll-behavior: smooth}
     body {@apply bg-gray-100;}
 
     #hero h1,
@@ -196,5 +197,34 @@
     /* For delete button in cart */
     .red-filter {
         filter: invert(16%) sepia(100%) saturate(4382%) hue-rotate(350deg) brightness(97%) contrast(107%);
+    }
+
+    /* Admin dashboard elements */
+    table {
+        @apply w-full border-collapse;
+    }
+
+    table th {
+        @apply bg-gray-50 px-6 py-4 text-left text-sm font-semibold text-gray-900 border-b border-gray-200;
+    }
+
+    table td {
+        @apply px-6 py-4 text-sm text-gray-700 border-b border-gray-100;
+    }
+
+    table tr:hover {
+        @apply bg-gray-50;
+    }
+
+    table button {
+        @apply text-center cursor-pointer inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white transition-all duration-300 active:scale-95;
+    }
+
+    table button.edit-btn {
+        @apply bg-blue-500 hover:bg-blue-600;
+    }
+
+    table button.delete-btn {
+        @apply bg-red-500 hover:bg-red-600;
     }
 }

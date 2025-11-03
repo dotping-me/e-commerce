@@ -14,7 +14,7 @@ $data = json_decode($json, true);
 // Validate again
 // TODO: Write better validation later
 
-if (!isset($data["product_id"]) || empty(trim($data["product_id"]))) {
+if (!isset($data["prodId"]) || empty(trim($data["prodId"]))) {
     http_response_code(400);
     echo json_encode(["error" => "Missing Product ID"]);
     exit;
@@ -25,7 +25,7 @@ $filepath = substr(__DIR__, 0, strpos(__DIR__, "api")) . "data/products.xml";
 $xml = simplexml_load_file($filepath);
 
 // Searches for products
-$prodId = trim($data["product_id"]);
+$prodId = trim($data["prodId"]);
 $prodFound = false;
 
 foreach ($xml->children() as $category) {
